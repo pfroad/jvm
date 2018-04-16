@@ -25,6 +25,25 @@ func (self *ZipEntry) readClass(className string) ([]byte, Entry, error) {
 		return nil, nil, err
 	}
 	defer r.Close()
+
+	for _, f := range r.File {
+		if f.Name == className {
+			rc, err := f.Open()
+			if err != nil {
+				return nil, nil, err
+			}
+
+			defer rc.Close()
+			data, err := ioutil.ReadAll(rc)
+			if err != nil {
+				return nil, nil, err
+			}
+
+			return data, self, nil
+		}
+	}
+
+	return nil, nil, errors.New("Class cannot be found:" + className)
 }
 
 func (self *ZipEntry) String() string {
