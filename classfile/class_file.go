@@ -46,7 +46,7 @@ func Parse(data []byte) (cf *ClassFile, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			// r.(type) if success to convert r to type return r, true else return r, false
-			err, ok := r.(error)
+			_, ok := r.(error)
 
 			if !ok {
 				err = fmt.Errorf("%v", r)
@@ -138,7 +138,7 @@ u2 attributes_count;
 attribute_info attributes[attributes_count];
 }*/
 func (cf *ClassFile) Fields() []*MemberInfo {
-	return cf.Fields
+	return cf.fields
 }
 
 func (cf *ClassFile) Methods() []*MemberInfo {

@@ -5,7 +5,8 @@ type ConstantPool []ConstantPoolInfo
 
 func readConstantPool(reader *ClassReader) ConstantPool {
 	cpCount := reader.readUint16()
-	for i := range cpCount - 1 {
-		
+	cp := make([]ConstantPoolInfo, cpCount)
+	for i := range cp {
+		cp[i] =
 	}
 }
