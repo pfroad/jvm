@@ -5,9 +5,8 @@ package classfile
 u1 tag;
 u1 info[];
 }*/
-type ConstantPoolInfo struct {
-	tag  uint8
-	info []uint8
+type ConstantInfo interface {
+	readInfo(reader *ClassReader)
 }
 
 const (
@@ -26,3 +25,15 @@ const (
 	CONSTANT_MethodType         = 16
 	CONSTANT_InvokeDynamic      = 18
 )
+
+func readConstantInfo(reader *ClassReader, cp []ConstantInfo) ConstantInfo {
+
+}
+
+func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo{
+	switch tag {
+	case CONSTANT_Utf8:
+		return
+		
+	}
+}

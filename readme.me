@@ -1,0 +1,33 @@
+1. golang type assertion
+only interface can call type assertion
+type Test struct {
+    msg string
+}
+type PrintInteface interface {
+    printInfo()
+}
+
+// Test implement interface PrintInteface
+func (t Test) printInfo() {
+}
+
+func main() {
+    var p PrintInteface = Test{}    // receiver is non-pointer
+    // var p2 PrintInteface = &Test{} // if receiver is pointer
+
+    // variable *T can call methods where receiver is pointrt or non-pointer
+    // variable T can call methods where receiver is only non-pointer
+
+    switch p.(type) {
+    // Test or PrintInteface
+    case Test:
+        a.printMsg()
+    }
+
+    // if variable is pointer, switch type case is pointer or interface
+    // switch p2.(type) {
+    // *Test or PrintInteface
+    // case *Test:
+    //    a.printMsg()
+    // }
+}
