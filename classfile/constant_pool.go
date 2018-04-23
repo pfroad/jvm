@@ -20,3 +20,11 @@ func readConstantPool(reader *ClassReader) ConstantPool {
 func (cp ConstantPool) getUtf8(index uint16) string {
 
 }
+
+func (cp ConstantPool) getClassName(classIndex uint16) string {
+	return cp.getUtf8()
+}
+
+func (cp ConstantPool) getNameAndType(nameAndTypeIndex uint16) (string, string) {
+	
+}
