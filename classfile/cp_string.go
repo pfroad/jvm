@@ -10,5 +10,5 @@ func (cs *ConstantString) readInfo(reader *ClassReader) {
 }
 
 func (cs *ConstantString) String() string {
-	return cs.getUtf8(cs.strIndex)
+	return cs.ConstantPool.getUtf8(cs.strIndex)
 }
