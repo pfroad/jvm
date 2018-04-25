@@ -1,7 +1,7 @@
 package classfile
 
 type ConstantClass struct {
-	ConstantPool
+	cp         ConstantPool
 	classIndex uint16
 }
 
@@ -10,5 +10,5 @@ func (cc *ConstantClass) readInfo(reader *ClassReader) {
 }
 
 func (cc *ConstantClass) String() string {
-	return cc.ConstantPool.getUtf8(cc.classIndex)
+	return cc.cp.getUtf8(cc.classIndex)
 }

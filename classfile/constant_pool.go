@@ -9,7 +9,7 @@ func readConstantPool(reader *ClassReader) ConstantPool {
 	for i := range cp {
 		cp[i] = readConstantInfo(reader, cp)
 		switch cp[i].(type) {
-		case *ConstantLongInfo, *ConstantDoubleInfo:
+		case *ConstantLong, *ConstantDouble:
 			i++
 		}
 	}
@@ -17,14 +17,22 @@ func readConstantPool(reader *ClassReader) ConstantPool {
 	return cp
 }
 
-func (cp ConstantPool) getUtf8(index uint16) string {
+func (cp ConstantPool) getConstantInfo(index uint16) ConstantInfo {
+	if cpInfo := cp[index]; cpInfo != nil {
+		return cpInfo
+	}
+	panic("Invalid constant pool index!")
+}
 
+func (cp ConstantPool) getUtf8(index uint16) string {
+	return cp.getConstantInfo(index).(*ConstantUtf8).str
 }
 
 func (cp ConstantPool) getClassName(classIndex uint16) string {
-	return cp.getUtf8()
+	return cp.getUtf8(cp.getConstantInfo(classIndex).(*ConstantClass).classIndex)
 }
 
 func (cp ConstantPool) getNameAndType(nameAndTypeIndex uint16) (string, string) {
-	
+	nameAndType := cp.getConstantInfo(nameAndTypeIndex).(*ConstantNameAndType)
+	return cp.getUtf8(nameAndType.nameIndex), cp.getUtf8(nameAndType.descriptorIndex)
 }

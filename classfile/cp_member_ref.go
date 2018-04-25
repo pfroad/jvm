@@ -1,7 +1,7 @@
 package classfile
 
 type ConstantMemberRef struct {
-	ConstantPool
+	cp               ConstantPool
 	classIndex       uint16
 	nameAndTypeIndex uint16
 }

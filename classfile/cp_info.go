@@ -26,7 +26,7 @@ const (
 	CONSTANT_InvokeDynamic      = 18
 )
 
-func readConstantInfo(reader *ClassReader, cp []ConstantInfo) ConstantInfo {
+func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
 
 }
 
