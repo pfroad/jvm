@@ -46,7 +46,7 @@ func loadClass(className string, cp *classpath.Classpath) {
 
 func printClassInfo(cf *classfile.ClassFile) {
 	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVeresion())
-	fmt.Printf("flags: %v\n", cf.AccessFlags())
+	fmt.Printf("flags: 0X%x\n", cf.AccessFlags())
 	fmt.Printf("constant count: %d\n", len(cf.ConstantPool()))
 	fmt.Printf("this class: %v\n", cf.ClassName())
 	fmt.Printf("supre class: %v\n", cf.SuperClassName())
@@ -54,12 +54,12 @@ func printClassInfo(cf *classfile.ClassFile) {
 
 	fmt.Printf("fields count: %d\n", len(cf.Fields()))
 	for _, field := range cf.Fields() {
-		fmt.Printf("%v\n", field)
+		fmt.Printf("%v\n", field.Name())
 	}
 
 	fmt.Printf("methods count: %d\n", len(cf.Methods()))
 	for _, method := range cf.Methods() {
-		fmt.Printf("%v\n", method)
+		fmt.Printf("%v\n", method.Name())
 	}
 }
 

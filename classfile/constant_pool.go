@@ -4,9 +4,10 @@ package classfile
 type ConstantPool []ConstantInfo
 
 func readConstantPool(reader *ClassReader) ConstantPool {
-	cpCount := reader.readUint16()
+	cpCount := int(reader.readUint16())
 	cp := make([]ConstantInfo, cpCount)
-	for i := range cp {
+	for i := 1; i < cpCount; i++ {
+		//fmt.Printf("cp index: %d\n", i)
 		cp[i] = readConstantInfo(reader, cp)
 		switch cp[i].(type) {
 		case *ConstantLong, *ConstantDouble:
