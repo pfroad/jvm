@@ -1,33 +1,33 @@
 package classfile
 
 const (
-	CONSTANT_VALUE = "ConstantValue"
-	CODE = "Code"
-	STACK_MAP_TABLE = "StackMapTable"
-	EXCEPTIONS = "Exceptions"
-	INNER_CLASSES = "InnerClasses"
-	ENCLOSING_METHOD = "EnclosingMethod"
-	SYNTHETIC = "Synthetic"
-	SIGNATURE = "Signature"
-	SOURCE_FILE = "SourceFile"
-	SOURCE_DEBUG_EXTENSION = "SourceDebugExtension"
-	LINE_NUMBER_TABLE = "LineNumberTable"
-	LOCAL_VARIABLE_TABLE = "LocalVariableTable"
-	LOCAL_VARIABLE_TYPE = "LocalVariableTypeTable"
-	DEPRECATED = "Deprecated"
-	RUNTIME_VISIBALE_ANNOTATIONS = "RuntimeVisibleAnnotations"
-	RUNTIME_INVISIBLE_ANNOTATIONS = "RuntimeInvisibleAnnotations"
-	RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS = "RuntimeVisibleParameterAnnotations"
+	CONSTANT_VALUE                          = "ConstantValue"
+	CODE                                    = "Code"
+	STACK_MAP_TABLE                         = "StackMapTable"
+	EXCEPTIONS                              = "Exceptions"
+	INNER_CLASSES                           = "InnerClasses"
+	ENCLOSING_METHOD                        = "EnclosingMethod"
+	SYNTHETIC                               = "Synthetic"
+	SIGNATURE                               = "Signature"
+	SOURCE_FILE                             = "SourceFile"
+	SOURCE_DEBUG_EXTENSION                  = "SourceDebugExtension"
+	LINE_NUMBER_TABLE                       = "LineNumberTable"
+	LOCAL_VARIABLE_TABLE                    = "LocalVariableTable"
+	LOCAL_VARIABLE_TYPE                     = "LocalVariableTypeTable"
+	DEPRECATED                              = "Deprecated"
+	RUNTIME_VISIBALE_ANNOTATIONS            = "RuntimeVisibleAnnotations"
+	RUNTIME_INVISIBLE_ANNOTATIONS           = "RuntimeInvisibleAnnotations"
+	RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS   = "RuntimeVisibleParameterAnnotations"
 	RUNTIME_INVISIBLE_PARAMETER_ANNOTATIONS = "RuntimeInvisibleParameterAnnotations"
-	RUNTIME_VISIBLE_TYPE_ANNOTATIONS = "RuntimeVisibleTypeAnnotations"
-	RUNTIME_INVISIBLE_TYPE_ANNOTATIONS = "RuntimeInvisibleTypeAnnotations"
-	ANNOATATION_DEFAULT = "AnnotationDefault"
-	BOOTSTRAP_METHODS = "BootstrapMethods"
-	METHOD_PARAMETERS = "MethodParameters"
+	RUNTIME_VISIBLE_TYPE_ANNOTATIONS        = "RuntimeVisibleTypeAnnotations"
+	RUNTIME_INVISIBLE_TYPE_ANNOTATIONS      = "RuntimeInvisibleTypeAnnotations"
+	ANNOATATION_DEFAULT                     = "AnnotationDefault"
+	BOOTSTRAP_METHODS                       = "BootstrapMethods"
+	METHOD_PARAMETERS                       = "MethodParameters"
 )
 
 type AttributeInfo interface {
-	readerInfo(reader *ClassReader)
+	readInfo(reader *ClassReader)
 }
 
 func readAttributes(reader *ClassReader, cp ConstantPool) []AttributeInfo {
@@ -43,29 +43,29 @@ func readAttribute(reader *ClassReader, cp ConstantPool) AttributeInfo {
 	attrName := cp.getUtf8(reader.readUint16())
 	attrLength := reader.readUint32()
 	attributeInfo := newAttributeInfo(attrName, attrLength, cp)
-	attributeInfo.readerInfo(reader)
+	attributeInfo.readInfo(reader)
 	return attributeInfo
 }
 
 func newAttributeInfo(attrName string, attrLen uint32, cp ConstantPool) AttributeInfo {
 	switch attrName {
 	case CODE:
-		return CodeAttribute{cp}
+		return &CodeAttribute{cp: cp}
 	case CONSTANT_VALUE:
-		return ConstantValueAttribute{}
+		return &ConstantValueAttribute{}
 	case DEPRECATED:
-		return DeprecatedAttribute{}
+		return &DeprecatedAttribute{}
 	case EXCEPTIONS:
-		return ExceptionsAttribute{}
+		return &ExceptionsAttribute{}
 	case LINE_NUMBER_TABLE:
-		return LineNumberTableAttribute{}
+		return &LineNumberTableAttribute{}
 	case LOCAL_VARIABLE_TABLE:
-		return LocalVariableTableAttribute{}
+		return &LocalVariableTableAttribute{}
 	case SOURCE_FILE:
-		return SourceFileAttribute{cp}
+		return &SourceFileAttribute{cp: cp}
 	case SYNTHETIC:
-		return SyntheticAttribute{}
+		return &SyntheticAttribute{}
 	default:
-		return UnparsedAttribute{}
+		return &UnparsedAttribute{name: attrName, length: attrLen}
 	}
 }

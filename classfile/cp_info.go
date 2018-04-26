@@ -27,13 +27,43 @@ const (
 )
 
 func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
-
+	tag := reader.readUint8()
+	ci := newConstantInfo(tag, cp)
+	ci.readInfo(reader)
+	return ci
 }
 
-func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo{
+func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	switch tag {
 	case CONSTANT_Utf8:
-		return
-		
+		return &ConstantUtf8{}
+	case CONSTANT_Class:
+		return &ConstantClass{cp: cp}
+	case CONSTANT_Double:
+		return &ConstantDouble{}
+	case CONSTANT_Long:
+		return &ConstantLong{}
+	case CONSTANT_Integer:
+		return &ConstantInteger{}
+	case CONSTANT_Float:
+		return &ConstantFloat{}
+	case CONSTANT_String:
+		return &ConstantString{cp: cp}
+	case CONSTANT_Fieldref:
+		return &ConstantFieldRef{ConstantMemberRef{cp: cp}}
+	case CONSTANT_Methodref:
+		return &ConstantMethodRef{ConstantMemberRef{cp: cp}}
+	case CONSTANT_InterfaceMethodref:
+		return &ConstantInterfaceMethodRef{ConstantMemberRef{cp: cp}}
+	case CONSTANT_NameAndType:
+		return &ConstantNameAndType{}
+	case CONSTANT_MethodHandle:
+		return &ConstantMethodHandle{}
+	case CONSTANT_MethodType:
+		return &ConstantMethodType{}
+	case CONSTANT_InvokeDynamic:
+		return &ConstantInvokeDynamic{}
+	default:
+		panic("java.lang.ClassFormatError: constant pool tag!")
 	}
 }

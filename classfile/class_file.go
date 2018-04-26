@@ -2,6 +2,7 @@ package classfile
 
 import (
 	"fmt"
+	//"bytes"
 )
 
 /* java Class file struct
@@ -24,6 +25,18 @@ u2 attributes_count;
 attribute_info attributes[attributes_count];
 }
 */
+
+//const (
+//	ACC_PUBLIC    = 0x0001
+//	ACC_PRIVATE   = 0x0002 //private
+//	ACC_PROTECTED = 0x0004 //protected
+//	ACC_STATIC    = 0x0008 //static
+//	ACC_FINAL     = 0x0010 //final
+//	ACC_VOLATILE  = 0x0040 //volatile
+//	ACC_TRANSIENT = 0x0080 //transient
+//	ACC_SYNTHETIC = 0x1000 //Declared synthetic; not present in the source code.
+//	ACC_ENUM      = 0x4000 //enum
+//)
 
 // import "fmt"
 
@@ -116,12 +129,39 @@ ACC_STATIC 0x0008 static
 ACC_FINAL 0x0010 final
 ACC_VOLATILE 0x0040 volatile
 ACC_TRANSIENT 0x0080 transient
-ACC_SYNTHETIC 0x1000 编译器自动产生
+ACC_SYNTHETIC 0x1000 Declared synthetic; not present in the source code.
 ACC_ENUM 0x4000 enum
 */
 func (cf *ClassFile) AccessFlags() uint16 {
 	return cf.accessFlags
 }
+//func (cf *ClassFile) AccessFlagString() string {
+//	str := bytes.Buffer{}
+//	if cf.accessFlags | ACC_PUBLIC == ACC_PUBLIC {
+//		str.WriteString("ACC_PUBLIC")
+//		str.WriteString(",")
+//	}
+//	if cf.accessFlags | ACC_FINAL == ACC_FINAL {
+//		str.WriteString("ACC_FINAL")
+//		str.WriteString(",")
+//	}
+//	if cf.accessFlags | ACC_PRIVATE == ACC_PRIVATE {
+//		str.WriteString("ACC_PRIVATE")
+//		str.WriteString(",")
+//	}
+//	if cf.accessFlags | ACC_PROTECTED == ACC_PROTECTED {
+//		str.WriteString("ACC_PROTECTED")
+//		str.WriteString(",")
+//	}
+//	if cf.accessFlags | ACC_STATIC == ACC_STATIC {
+//		str.WriteString("ACC_STATIC")
+//		str.WriteString(",")
+//	}
+//	if cf.accessFlags | ACC_VOLATILE == ACC_VOLATILE{
+//		str.WriteString("ACC_VOLATILE")
+//		str.WriteString(",")
+//	}
+//}
 
 // ConstantPool getter class file constant pool
 func (cf *ClassFile) ConstantPool() ConstantPool {
@@ -152,7 +192,7 @@ func (cf *ClassFile) ClassName() string {
 func (cf *ClassFile) SuperClassName() string {
 	// java.lang.Object no super class
 	if cf.superClass > 0 {
-		return cf.constantPool.getSuperClassName(cf.superClass)
+		return cf.constantPool.getClassName(cf.superClass)
 	}
 
 	return ""

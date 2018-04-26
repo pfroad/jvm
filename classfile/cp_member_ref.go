@@ -16,9 +16,9 @@ func (cmr *ConstantMemberRef) readInfo(reader *ClassReader) {
 }
 
 func (cmr *ConstantMemberRef) ClassName() string {
-	return cmr.ConstantPool.getClassName(cmr.classIndex)
+	return cmr.cp.getClassName(cmr.classIndex)
 }
 
 func (cmr *ConstantMemberRef) NameAndTypeIndex() (string, string) {
-	return cmr.ConstantPool.getNameAndType(cmr.nameAndTypeIndex)
+	return cmr.cp.getNameAndType(cmr.nameAndTypeIndex)
 }
