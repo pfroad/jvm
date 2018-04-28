@@ -14,6 +14,16 @@ func newOperandStack(maxStack uint) *OperandStack {
 	return nil
 }
 
+func (oStack *OperandStack) Pop() interface{} {
+	oStack.size--
+	return oStack.arr[oStack.size]
+}
+
+func (oStack *OperandStack) Push(val interface{})  {
+	oStack.arr[oStack.size] = val
+	oStack.size++
+}
+
 func (oStack *OperandStack) PopInt() int32 {
 	oStack.size--
 	return oStack.arr[oStack.size].(int32)
