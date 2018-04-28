@@ -9,7 +9,7 @@ type OperandStack struct {
 
 func newOperandStack(maxStack uint) *OperandStack {
 	if maxStack > 0 {
-		return &OperandStack{maxStack, make([]interface{}, maxStack)}
+		return &OperandStack{arr: make([]interface{}, maxStack)}
 	}
 	return nil
 }
@@ -36,9 +36,9 @@ func (oStack *OperandStack) PushFloat(val float32) {
 
 func (oStack *OperandStack) PopLong() int64 {
 	oStack.size--
-	high := oStack.arr[oStack.size].(int32)
+	high := uint32(oStack.arr[oStack.size].(int32))
 	oStack.size--
-	low := oStack.arr[oStack.size].(int32)
+	low := uint32(oStack.arr[oStack.size].(int32))
 
 	return int64(high)<< 32 | int64(low)
 }
@@ -58,6 +58,11 @@ func (oStack *OperandStack) PopDouble() float64 {
 func (oStack *OperandStack) PushDouble(val float64) {
 	bits := math.Float64bits(val)
 	oStack.PushLong(int64(bits))
+}
+
+func (oStack *OperandStack) PushRef(obj *Object) {
+	oStack.arr[oStack.size] = obj	// Pop and release reference. int and float is not reference type, needn't release
+	oStack.size++
 }
 
 func (oStack *OperandStack) PopRef() *Object {
