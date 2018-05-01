@@ -1,6 +1,6 @@
 package math
 
-impXORt (
+import (
 	"jvm/instructions/common"
 	"jvm/runtime"
 )
