@@ -5,24 +5,24 @@ import (
 	"jvm/runtime"
 )
 
-type IOR struct {
+type IXOR struct {
 	common.NoOperandsInstruction
 }
 
-type LOR struct {
+type LXOR struct {
 	common.NoOperandsInstruction
 }
 
-func (ior *IOR) Execute(frame runtime.Frame) {
+func (xor *IXOR) Execute(frame runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopInt()
 	v2 := stack.PopInt()
-	stack.PushInt(v1 | v2)
+	stack.PushInt(v1 ^ v2)
 }
 
-func (lor *LOR) Execute(frame runtime.Frame) {
+func (xor *LXOR) Execute(frame runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopLong()
 	v2 := stack.PopLong()
-	stack.PushLong(v1 | v2)
+	stack.PushLong(v1 ^ v2)
 }
