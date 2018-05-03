@@ -1,9 +1,9 @@
 package runtime
 
 type Stack struct {
-	maxSize uint
-	size    uint
-	_top    *Frame
+	maxSize  uint
+	size     uint
+	topFrame *Frame
 }
 
 func NewStack(maxSize uint) *Stack {
@@ -15,29 +15,29 @@ func (s *Stack) push(frame *Frame) {
 		panic("java.lang.StackOverflowError")
 	}
 
-	if s._top != nil {
-		frame.previous = s._top
+	if s.topFrame != nil {
+		frame.previous = s.topFrame
 	}
 
-	s._top = frame
+	s.topFrame = frame
 	s.size++
 }
 
 func (s *Stack) pop() *Frame {
-	if s._top == nil {
+	if s.topFrame == nil {
 		panic("jvm stack is empty!")
 	}
 
-	frame := s._top
-	s._top = frame.previous
+	frame := s.topFrame
+	s.topFrame = frame.previous
 	s.size--
 	return frame
 }
 
 func (s *Stack) top() *Frame {
-	if s._top == nil {
+	if s.topFrame == nil {
 		panic("jvm stack is empty!")
 	}
 
-	return s._top
+	return s.topFrame
 }

@@ -23,6 +23,16 @@ func (bi *BranchInstruction) FetchOperands(reader *BytecodeReader) {
 	bi.Offset = int(reader.ReadInt16())
 }
 
+func (bi *BranchInstruction) Branch(frame runtime.Frame) {
+	currentPC := frame.PC()
+	frame.SetPC(currentPC + bi.Offset)
+}
+
+func (bi *BranchInstruction) BranchByOffset(frame runtime.Frame, offset int32) {
+	currentPC := frame.PC()
+	frame.SetPC(currentPC + int(offset))
+}
+
 // localVars index is uint8
 type Index8Instruction struct {
 	Index uint

@@ -30,10 +30,21 @@ func (reader *BytecodeReader) ReadInt16() int16 {
 	return int16(reader.ReadUint16())
 }
 
-func (reader *BytecodeReader) ReadUint32() uint32 {
-	c1 := uint32(reader.ReadUint8())
-	c2 := uint32(reader.ReadUint8())
-	c3 := uint32(reader.ReadUint8())
-	c4 := uint32(reader.ReadUint8())
+func (reader *BytecodeReader) ReadInt32() int32 {
+	c1 := int32(reader.ReadUint8())
+	c2 := int32(reader.ReadUint8())
+	c3 := int32(reader.ReadUint8())
+	c4 := int32(reader.ReadUint8())
 	return (c1 << 24) | (c2 << 16) | (c3 << 8) | c4
+}
+
+func (reader *BytecodeReader) PC() int {
+	return reader.pc
+}
+func (reader *BytecodeReader) ReadInt32s(len int32) []int32 {
+	ints := make([]int32, len)
+	for i := range ints {
+		ints[i] = reader.ReadInt32()
+	}
+	return ints
 }
