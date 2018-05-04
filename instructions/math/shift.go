@@ -7,7 +7,7 @@ import (
 
 type IShR struct {
 	common.NoOperandsInstruction
-} 
+}
 
 type IShL struct {
 	common.NoOperandsInstruction
@@ -29,7 +29,7 @@ type LUShR struct {
 	common.NoOperandsInstruction
 }
 
-func (sh *IShR) Execute(frame runtime.Frame) {
+func (sh *IShR) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	// int is 32 bits, 5 bits enough to shift it
 	s := uint32(stack.PopInt()) & 0x1f
@@ -37,7 +37,7 @@ func (sh *IShR) Execute(frame runtime.Frame) {
 	stack.PushInt(val >> s)
 }
 
-func (sh *IShL) Execute(frame runtime.Frame) {
+func (sh *IShL) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	// int is 32 bits, 5 bits enough to shift it
 	s := uint32(stack.PopInt()) & 0x1f
@@ -45,7 +45,7 @@ func (sh *IShL) Execute(frame runtime.Frame) {
 	stack.PushInt(val << s)
 }
 
-func (sh *IUShR) Execute(frame runtime.Frame) {
+func (sh *IUShR) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	// int is 32 bits, 7 bits enough to shift it
 	s := uint32(stack.PopInt()) & 0x1f
@@ -53,7 +53,7 @@ func (sh *IUShR) Execute(frame runtime.Frame) {
 	stack.PushInt(int32(val >> s))
 }
 
-func (sh *LShR) Execute(frame runtime.Frame) {
+func (sh *LShR) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	// int is 32 bits, 5 bits enough to shift it
 	s := uint32(stack.PopInt()) & 0x3f
@@ -61,7 +61,7 @@ func (sh *LShR) Execute(frame runtime.Frame) {
 	stack.PushLong(val >> s)
 }
 
-func (sh *LShL) Execute(frame runtime.Frame) {
+func (sh *LShL) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	// int is 32 bits, 7 bits enough to shift it
 	s := uint32(stack.PopInt()) & 0x3f
@@ -69,7 +69,7 @@ func (sh *LShL) Execute(frame runtime.Frame) {
 	stack.PushLong(val << s)
 }
 
-func (sh *LUShR) Execute(frame runtime.Frame) {
+func (sh *LUShR) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	// int is 32 bits, 7 bits enough to shift it
 	s := uint32(stack.PopInt()) & 0x3f

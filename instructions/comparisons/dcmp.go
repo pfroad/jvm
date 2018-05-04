@@ -14,7 +14,7 @@ type DCMPL struct {
 	common.NoOperandsInstruction
 }
 
-func dcomp(frame runtime.Frame, gFlag bool) {
+func dcomp(frame *runtime.Frame, gFlag bool) {
 	stack := frame.OperandStack()
 	v2 := stack.PopFloat()
 	v1 := stack.PopFloat()
@@ -32,10 +32,10 @@ func dcomp(frame runtime.Frame, gFlag bool) {
 	}
 }
 
-func (dcmpg *DCMPG) Execute(frame runtime.Frame)  {
+func (dcmpg *DCMPG) Execute(frame *runtime.Frame)  {
 	dcomp(frame, true)
 }
 
-func (dcmpl *DCMPL) Execute(frame runtime.Frame) {
+func (dcmpl *DCMPL) Execute(frame *runtime.Frame) {
 	dcomp(frame, false)
 }

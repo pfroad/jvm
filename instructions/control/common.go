@@ -32,7 +32,7 @@ func compare(v1, v2 int32, comparator int) bool {
 }
 
 // int comparison condition
-func condition(frame runtime.Frame, comparator int) bool {
+func condition(frame *runtime.Frame, comparator int) bool {
 	stack := frame.OperandStack()
 	v2 := stack.PopInt()
 	v1 := stack.PopInt()
@@ -40,7 +40,7 @@ func condition(frame runtime.Frame, comparator int) bool {
 }
 
 // ref comparison condition
-func aCondition(frame runtime.Frame, comparator int) bool {
+func aCondition(frame *runtime.Frame, comparator int) bool {
 	stack := frame.OperandStack()
 	v2 := stack.PopRef()
 	v1 := stack.PopRef()

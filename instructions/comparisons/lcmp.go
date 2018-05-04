@@ -10,7 +10,7 @@ type LCMP struct {
 	common.NoOperandsInstruction
 }
 
-func (lcmp *LCMP) Execute(frame runtime.Frame)  {
+func (lcmp *LCMP) Execute(frame *runtime.Frame)  {
 	stack := frame.OperandStack()
 	v2 := stack.PopLong()
 	v1 := stack.PopLong()

@@ -51,3 +51,13 @@ func (mi *MemberInfo) Descriptor() string {
 func (mi *MemberInfo) AccessFlag() uint16 {
 	return mi.accessFlag
 }
+
+func (mi *MemberInfo) CodeAttribute() *CodeAttribute {
+	for _, attrInfo := range mi.attributes {
+		switch attrInfo.(type) {
+		case *CodeAttribute:
+			return attrInfo.(*CodeAttribute)
+		}
+	}
+	return nil
+}

@@ -29,7 +29,7 @@ type IFGE struct {
 	common.BranchInstruction
 }
 
-func (ifeq *IFEQ) Execute(frame runtime.Frame) {
+func (ifeq *IFEQ) Execute(frame *runtime.Frame) {
 	val := frame.OperandStack().PopInt()
 
 	if compare(val, 0, EQ) {
@@ -37,7 +37,7 @@ func (ifeq *IFEQ) Execute(frame runtime.Frame) {
 	}
 }
 
-func (ifne *IFNE) Execute(frame runtime.Frame) {
+func (ifne *IFNE) Execute(frame *runtime.Frame) {
 	val := frame.OperandStack().PopInt()
 
 	if compare(val, 0, NE) {
@@ -45,7 +45,7 @@ func (ifne *IFNE) Execute(frame runtime.Frame) {
 	}
 }
 
-func (iflt *IFLT) Execute(frame runtime.Frame) {
+func (iflt *IFLT) Execute(frame *runtime.Frame) {
 	val := frame.OperandStack().PopInt()
 
 	if compare(val, 0, LT) {
@@ -53,7 +53,7 @@ func (iflt *IFLT) Execute(frame runtime.Frame) {
 	}
 }
 
-func (ifgt *IFGT) Execute(frame runtime.Frame) {
+func (ifgt *IFGT) Execute(frame *runtime.Frame) {
 	val := frame.OperandStack().PopInt()
 
 	if compare(val, 0, GT) {
@@ -61,7 +61,7 @@ func (ifgt *IFGT) Execute(frame runtime.Frame) {
 	}
 }
 
-func (ifle *IFLE) Execute(frame runtime.Frame) {
+func (ifle *IFLE) Execute(frame *runtime.Frame) {
 	val := frame.OperandStack().PopInt()
 
 	if compare(val, 0, LE) {
@@ -69,7 +69,7 @@ func (ifle *IFLE) Execute(frame runtime.Frame) {
 	}
 }
 
-func (ifge *IFGE) Execute(frame runtime.Frame) {
+func (ifge *IFGE) Execute(frame *runtime.Frame) {
 	val := frame.OperandStack().PopInt()
 
 	if compare(val, 0, GE) {

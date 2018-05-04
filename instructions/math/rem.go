@@ -23,7 +23,7 @@ type DRem struct {
 	common.NoOperandsInstruction
 }
 
-func (rem *IRem) Execute(frame runtime.Frame) {
+func (rem *IRem) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopInt()
 	v2 := stack.PopInt()
@@ -36,7 +36,7 @@ func (rem *IRem) Execute(frame runtime.Frame) {
 	stack.PushInt(result)
 }
 
-func (rem *LRem) Execute(frame runtime.Frame) {
+func (rem *LRem) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopLong()
 	v2 := stack.PopLong()
@@ -49,7 +49,7 @@ func (rem *LRem) Execute(frame runtime.Frame) {
 	stack.PushLong(result)
 }
 
-func (rem *FRem) Execute(frame runtime.Frame) {
+func (rem *FRem) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopFloat()
 	v2 := stack.PopFloat()
@@ -58,7 +58,7 @@ func (rem *FRem) Execute(frame runtime.Frame) {
 	stack.PushFloat(float32(result))
 }
 
-func (rem *DRem) Execute(frame runtime.Frame) {
+func (rem *DRem) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopDouble()
 	v2 := stack.PopDouble()

@@ -22,7 +22,7 @@ type DAdd struct {
 	common.NoOperandsInstruction
 }
 
-func (add *IAdd) Execute(frame runtime.Frame) {
+func (add *IAdd) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopInt()
 	v2 := stack.PopInt()
@@ -30,7 +30,7 @@ func (add *IAdd) Execute(frame runtime.Frame) {
 	stack.PushInt(result)
 }
 
-func (add *LAdd) Execute(frame runtime.Frame) {
+func (add *LAdd) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopLong()
 	v2 := stack.PopLong()
@@ -38,7 +38,7 @@ func (add *LAdd) Execute(frame runtime.Frame) {
 	stack.PushLong(result)
 }
 
-func (add *FAdd) Execute(frame runtime.Frame) {
+func (add *FAdd) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopFloat()
 	v2 := stack.PopFloat()
@@ -46,7 +46,7 @@ func (add *FAdd) Execute(frame runtime.Frame) {
 	stack.PushFloat(result)
 }
 
-func (add *DAdd) Execute(frame runtime.Frame) {
+func (add *DAdd) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopDouble()
 	v2 := stack.PopDouble()

@@ -22,7 +22,7 @@ type DMul struct {
 	common.NoOperandsInstruction
 }
 
-func (mul *IMul) Execute(frame runtime.Frame) {
+func (mul *IMul) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopInt()
 	v2 := stack.PopInt()
@@ -30,7 +30,7 @@ func (mul *IMul) Execute(frame runtime.Frame) {
 	stack.PushInt(result)
 }
 
-func (mul *LMul) Execute(frame runtime.Frame) {
+func (mul *LMul) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopLong()
 	v2 := stack.PopLong()
@@ -38,7 +38,7 @@ func (mul *LMul) Execute(frame runtime.Frame) {
 	stack.PushLong(result)
 }
 
-func (mul *FMul) Execute(frame runtime.Frame) {
+func (mul *FMul) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopFloat()
 	v2 := stack.PopFloat()
@@ -46,7 +46,7 @@ func (mul *FMul) Execute(frame runtime.Frame) {
 	stack.PushFloat(result)
 }
 
-func (mul *DMul) Execute(frame runtime.Frame) {
+func (mul *DMul) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopDouble()
 	v2 := stack.PopDouble()

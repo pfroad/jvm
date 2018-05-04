@@ -25,6 +25,18 @@ func (ca *CodeAttribute) readInfo(reader *ClassReader) {
 	ca.attributes = readAttributes(reader, ca.cp)
 }
 
+func (ca *CodeAttribute) Code() []byte {
+	return ca.code
+}
+
+func (ca *CodeAttribute) MaxLocals() uint16 {
+	return ca.maxLocals
+}
+
+func (ca *CodeAttribute) MaxStack() uint16 {
+	return ca.maxStack
+}
+
 func readExceptionTable(reader *ClassReader) []*ExceptionTableEntry {
 	exceptionTableLen := reader.readUint16()
 	exceptionTable := make([]*ExceptionTableEntry, exceptionTableLen)

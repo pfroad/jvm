@@ -13,14 +13,14 @@ type IFACMPNE struct {
 	common.BranchInstruction
 }
 
-func (eq *IFACMPEQ) Execute(frame runtime.Frame)  {
+func (eq *IFACMPEQ) Execute(frame *runtime.Frame)  {
 	if aCondition(frame, EQ) {
 		eq.BranchInstruction.Branch(frame)
 	}
 }
 
-func (ne *IFACMPNE) Execute(frame runtime.Frame)  {
+func (ne *IFACMPNE) Execute(frame *runtime.Frame)  {
 	if aCondition(frame, NE) {
-		eq.BranchInstruction.Branch(frame)
+		ne.BranchInstruction.Branch(frame)
 	}
 }

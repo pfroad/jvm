@@ -5,10 +5,22 @@ import (
 	"jvm/runtime"
 )
 
-type GOTO struct {
+type GoTo struct {
 	common.BranchInstruction
 }
 
-func (g2 *GOTO) Execute(frame runtime.Frame) {
+func (g2 *GoTo) Execute(frame *runtime.Frame) {
 	g2.BranchInstruction.Branch(frame)
+}
+
+type GoToW struct {
+	common.BranchInstruction
+}
+
+func (g2w *GoToW) FetchOperands(reader *common.BytecodeReader) {
+	g2w.Offset = int(reader.ReadInt32())
+}
+
+func (g2w *GoToW) Execute(frame *runtime.Frame) {
+	g2w.BranchInstruction.Branch(frame)
 }

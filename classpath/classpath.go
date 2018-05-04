@@ -62,14 +62,13 @@ func exists(path string) bool {
 
 func (self *Classpath) ReadClass(className string) ([]byte, Entry, error) {
 	classFile := className + ".class"
-	fmt.Printf("Load class %s", classFile)
+	fmt.Printf("Load class %s\n", classFile)
 	data, entry, err := self.bootClasspath.readClass(classFile)
 	if err == nil {
 		return data, entry, err
 	}
 
-	fmt.Printf("Errors: %s", err)
-
+	//fmt.Printf("Errors: %s", err)
 	if data, entry, err := self.extClasspath.readClass(classFile); err == nil {
 		return data, entry, err
 	}

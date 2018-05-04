@@ -22,7 +22,7 @@ type DDiv struct {
 	common.NoOperandsInstruction
 }
 
-func (div *IDiv) Execute(frame runtime.Frame) {
+func (div *IDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopInt()
 	v2 := stack.PopInt()
@@ -35,7 +35,7 @@ func (div *IDiv) Execute(frame runtime.Frame) {
 	stack.PushInt(result)
 }
 
-func (div *LDiv) Execute(frame runtime.Frame) {
+func (div *LDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopLong()
 	v2 := stack.PopLong()
@@ -48,7 +48,7 @@ func (div *LDiv) Execute(frame runtime.Frame) {
 	stack.PushLong(result)
 }
 
-func (div *FDiv) Execute(frame runtime.Frame) {
+func (div *FDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopFloat()
 	v2 := stack.PopFloat()
@@ -56,7 +56,7 @@ func (div *FDiv) Execute(frame runtime.Frame) {
 	stack.PushFloat(result)
 }
 
-func (div *DDiv) Execute(frame runtime.Frame) {
+func (div *DDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
 	v1 := stack.PopDouble()
 	v2 := stack.PopDouble()

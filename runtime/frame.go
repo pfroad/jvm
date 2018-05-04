@@ -10,11 +10,12 @@ type Frame struct {
 	localVars    LocalVars
 	operandStack *OperandStack
 	thread       *Thread
+	nextPC       int
 }
 
 func NewFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
 	return &Frame{
-		thread: thread,
+		thread:       thread,
 		localVars:    newLocalVars(maxLocals),
 		operandStack: newOperandStack(maxStack),
 	}
@@ -33,11 +34,9 @@ func (f *Frame) Thread() *Thread {
 }
 
 func (f *Frame) PC() int {
-	return f.thread.pc
+	return f.nextPC
 }
 
 func (f *Frame) SetPC(pc int) {
-	f.thread.SetPC(pc)
+	f.nextPC = pc
 }
-
-

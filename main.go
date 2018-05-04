@@ -2,15 +2,25 @@ package main
 
 // import "fmt"
 // import "flag"
-import "fmt"
 import (
-	"jvm/runtime"
+	"fmt"
+	"jvm/classpath"
+	"strings"
+	"jvm/classfile"
 )
 
 func startJVM(cmd *Cmd) {
-	//cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
+	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
 	//fmt.Printf("classpath: %s, class: %s args: %v \n", cmd.cpOption, cmd.class, cmd.args)
-	//className := strings.Replace(cmd.class, ".", "/", -1)
+	className := strings.Replace(cmd.class, ".", "/", -1)
+	cf := loadClass(className, cp)
+	mainMethod := getMainMethod(cf)
+
+	if mainMethod != nil {
+		interpret(mainMethod)
+	} else {
+		fmt.Printf("Main method not found in class %s\n", cmd.class)
+	}
 	//data, _, err := cp.ReadClass(className)
 	//
 	//if err != nil {
@@ -21,65 +31,75 @@ func startJVM(cmd *Cmd) {
 	//
 	//fmt.Printf("class data:%v\n", data)
 	//loadClass(className, cp)
-	frame := runtime.NewFrame(100, 100)
-	testLocalVars(frame.LocalVars())
-	testOperandStack(frame.OperandStack())
+	//frame := runtime.NewFrame(100, 100)
+	//testLocalVars(frame.LocalVars())
+	//testOperandStack(frame.OperandStack())
 }
 
-func testLocalVars(vars runtime.LocalVars) {
-	vars.SetInt(0, 100)
-	vars.SetInt(1, -100)
-	vars.SetLong(2, 2997924580)
-	vars.SetLong(4, -2997924580)
-	vars.SetFloat(6, 3.1415926)
-	vars.SetDouble(7, 2.71828182845)
-	vars.SetRef(9, nil)
+func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
+	for _, m := range cf.Methods() {
+		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
+			return m
+		}
+	}
 
-	println(vars.GetInt(0))
-	println(vars.GetInt(1))
-	println(vars.GetLong(2))
-	println(vars.GetLong(4))
-	println(vars.GetFloat(6))
-	println(vars.GetDouble(7))
-	println(vars.GetRef(9))
+	return nil
 }
 
-func testOperandStack(stack *runtime.OperandStack) {
-	stack.PushInt(100)
-	stack.PushInt(-100)
-	stack.PushLong(2997924580)
-	stack.PushLong(-2997924580)
-	stack.PushFloat(3.1415926)
-	stack.PushDouble(2.71828182845)
-	stack.PushRef(nil)
-
-	println(stack.PopRef())
-	println(stack.PopDouble())
-	println(stack.PopFloat())
-	println(stack.PopLong())
-	println(stack.PopLong())
-	println(stack.PopInt())
-	println(stack.PopInt())
-}
-
-//func loadClass(className string, cp *classpath.Classpath) {
-//	data, _, err := cp.ReadClass(className)
+//func testLocalVars(vars runtime.LocalVars) {
+//	vars.SetInt(0, 100)
+//	vars.SetInt(1, -100)
+//	vars.SetLong(2, 2997924580)
+//	vars.SetLong(4, -2997924580)
+//	vars.SetFloat(6, 3.1415926)
+//	vars.SetDouble(7, 2.71828182845)
+//	vars.SetRef(9, nil)
 //
-//	if err != nil {
-//		//fmt.Printf("Cannot find or load main class %s\n", cmd.class)
-//		//fmt.Printf("Error:%s", err)
-//		//return
-//		panic(err)
-//	}
-//
-//	cf, err := classfile.Parse(data)
-//
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	printClassInfo(cf)
+//	println(vars.GetInt(0))
+//	println(vars.GetInt(1))
+//	println(vars.GetLong(2))
+//	println(vars.GetLong(4))
+//	println(vars.GetFloat(6))
+//	println(vars.GetDouble(7))
+//	println(vars.GetRef(9))
 //}
+//
+//func testOperandStack(stack *runtime.OperandStack) {
+//	stack.PushInt(100)
+//	stack.PushInt(-100)
+//	stack.PushLong(2997924580)
+//	stack.PushLong(-2997924580)
+//	stack.PushFloat(3.1415926)
+//	stack.PushDouble(2.71828182845)
+//	stack.PushRef(nil)
+//
+//	println(stack.PopRef())
+//	println(stack.PopDouble())
+//	println(stack.PopFloat())
+//	println(stack.PopLong())
+//	println(stack.PopLong())
+//	println(stack.PopInt())
+//	println(stack.PopInt())
+//}
+
+func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
+	data, _, err := cp.ReadClass(className)
+
+	if err != nil {
+		//fmt.Printf("Cannot find or load main class %s\n", cmd.class)
+		//fmt.Printf("Error:%s", err)
+		//return
+		panic(err)
+	}
+
+	cf, err := classfile.Parse(data)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return cf
+}
 //
 //func printClassInfo(cf *classfile.ClassFile) {
 //	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVeresion())

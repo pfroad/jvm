@@ -14,7 +14,7 @@ type FCMPL struct {
 	common.NoOperandsInstruction
 }
 
-func fcomp(frame runtime.Frame, gFlag bool) {
+func fcomp(frame *runtime.Frame, gFlag bool) {
 	stack := frame.OperandStack()
 	v2 := stack.PopFloat()
 	v1 := stack.PopFloat()
@@ -32,10 +32,10 @@ func fcomp(frame runtime.Frame, gFlag bool) {
 	}
 }
 
-func (fcmpg *FCMPG) Execute(frame runtime.Frame)  {
+func (fcmpg *FCMPG) Execute(frame *runtime.Frame)  {
 	fcomp(frame, true)
 }
 
-func (fcmpl *FCMPL) Execute(frame runtime.Frame) {
+func (fcmpl *FCMPL) Execute(frame *runtime.Frame) {
 	fcomp(frame, false)
 }
