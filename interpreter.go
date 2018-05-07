@@ -43,7 +43,7 @@ func loop(thread *runtime.Thread, code []byte) {
 
 func catchError(frame *runtime.Frame) {
 	if r := recover(); r != nil {
-		fmt.Printf("LocalVars:%v\n", frame.LocalVars())
+		fmt.Printf("Variables:%v\n", frame.LocalVars())
 		fmt.Printf("OperandStack: %v\n", frame.OperandStack())
 		panic(r)
 	}

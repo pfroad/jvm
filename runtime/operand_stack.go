@@ -1,6 +1,9 @@
 package runtime
 
-import "math"
+import (
+	"math"
+	"jvm/runtime/heap"
+)
 
 type OperandStack struct {
 	size uint
@@ -70,14 +73,14 @@ func (oStack *OperandStack) PushDouble(val float64) {
 	oStack.PushLong(int64(bits))
 }
 
-func (oStack *OperandStack) PushRef(obj *Object) {
+func (oStack *OperandStack) PushRef(obj *heap.Object) {
 	oStack.arr[oStack.size] = obj	// Pop and release reference. int and float is not reference type, needn't release
 	oStack.size++
 }
 
-func (oStack *OperandStack) PopRef() *Object {
+func (oStack *OperandStack) PopRef() *heap.Object {
 	oStack.size--
-	ref := oStack.arr[oStack.size].(*Object)
+	ref := oStack.arr[oStack.size].(*heap.Object)
 	oStack.arr[oStack.size] = nil	// Pop and release reference. int and float is not reference type, needn't release
 	return ref
 }

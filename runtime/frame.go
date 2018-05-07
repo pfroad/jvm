@@ -7,7 +7,7 @@ package runtime
 // thread of control
 type Frame struct {
 	previous     *Frame
-	localVars    LocalVars
+	localVars    Variables
 	operandStack *OperandStack
 	thread       *Thread
 	//nextPC       int
@@ -21,7 +21,7 @@ func NewFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
 	}
 }
 
-func (f *Frame) LocalVars() LocalVars {
+func (f *Frame) LocalVars() Variables {
 	return f.localVars
 }
 
