@@ -16,11 +16,15 @@ type IFACMPNE struct {
 func (eq *IFACMPEQ) Execute(frame *runtime.Frame)  {
 	if aCondition(frame, EQ) {
 		eq.BranchInstruction.Branch(frame)
+	} else {
+		eq.NoBranch(frame)
 	}
 }
 
 func (ne *IFACMPNE) Execute(frame *runtime.Frame)  {
 	if aCondition(frame, NE) {
 		ne.BranchInstruction.Branch(frame)
+	} else {
+		ne.NoBranch(frame)
 	}
 }

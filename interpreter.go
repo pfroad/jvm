@@ -27,7 +27,7 @@ func loop(thread *runtime.Thread, code []byte) {
 	reader := &common.BytecodeReader{}
 
 	for {
-		pc := frame.PC()
+		pc := thread.PC()
 		//thread.SetPC(pc)
 		reader.Reset(code, pc)
 

@@ -14,6 +14,8 @@ func (ifNull *IfNull) Execute(frame *runtime.Frame) {
 
 	if ref == nil {
 		ifNull.Branch(frame)
+	} else {
+		ifNull.NoBranch(frame)
 	}
 }
 
@@ -26,5 +28,7 @@ func (nonNull *IfNonNull) Execute(frame *runtime.Frame) {
 
 	if ref != nil {
 		nonNull.Branch(frame)
+	} else {
+		nonNull.NoBranch(frame)
 	}
 }

@@ -17,11 +17,13 @@ func (noop *NoOperandsInstruction) FetchOperands(reader *BytecodeReader, frame *
 
 // offset is uint 16
 type BranchInstruction struct {
-	Offset int
+	Offset    int
+	currentPC int
 }
 
 func (bi *BranchInstruction) FetchOperands(reader *BytecodeReader, frame *runtime.Frame) {
 	bi.Offset = int(reader.ReadInt16())
+	bi.currentPC = reader.PC()
 }
 
 //func (bi *BranchInstruction) Execute(frame *runtime.Frame) {
@@ -29,13 +31,17 @@ func (bi *BranchInstruction) FetchOperands(reader *BytecodeReader, frame *runtim
 //}
 
 func (bi *BranchInstruction) Branch(frame *runtime.Frame) {
-	currentPC := frame.Thread().PC()
-	frame.SetPC(currentPC + bi.Offset)
+	cPC := frame.Thread().PC()
+	frame.SetPC(cPC + bi.Offset)
 }
 
 func (bi *BranchInstruction) BranchByOffset(frame *runtime.Frame, offset int32) {
-	currentPC := frame.Thread().PC()
-	frame.SetPC(currentPC + int(offset))
+	cPC := frame.Thread().PC()
+	frame.SetPC(cPC + int(offset))
+}
+
+func (bi *BranchInstruction) NoBranch(frame *runtime.Frame) {
+	frame.Thread().SetPC(bi.currentPC)
 }
 
 // localVars index is uint8
