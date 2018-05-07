@@ -11,9 +11,10 @@ type IINC struct {
 	Const int32
 }
 
-func (iinc *IINC) FetchOperands(reader *common.BytecodeReader) {
+func (iinc *IINC) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
 	iinc.Index = uint(reader.ReadUint8())
 	iinc.Const = int32(reader.ReadInt8())
+	frame.SetPC(reader.PC())
 }
 
 func (iinc *IINC) Execute(frame *runtime.Frame) {

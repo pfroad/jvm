@@ -3,15 +3,16 @@ package common
 import "jvm/runtime"
 
 type Instruction interface {
-	FetchOperands(reader *BytecodeReader)
+	FetchOperands(reader *BytecodeReader, frame *runtime.Frame)
 	Execute(frame *runtime.Frame)
 }
 
 type NoOperandsInstruction struct {
 }
 
-func (noop *NoOperandsInstruction) FetchOperands(reader *BytecodeReader) {
+func (noop *NoOperandsInstruction) FetchOperands(reader *BytecodeReader, frame *runtime.Frame) {
 	// nothing to do
+	frame.SetPC(reader.pc)
 }
 
 // offset is uint 16
@@ -19,7 +20,7 @@ type BranchInstruction struct {
 	Offset int
 }
 
-func (bi *BranchInstruction) FetchOperands(reader *BytecodeReader) {
+func (bi *BranchInstruction) FetchOperands(reader *BytecodeReader, frame *runtime.Frame) {
 	bi.Offset = int(reader.ReadInt16())
 }
 
@@ -42,8 +43,9 @@ type Index8Instruction struct {
 	Index uint
 }
 
-func (i8 *Index8Instruction) FetchOperands(reader *BytecodeReader) {
+func (i8 *Index8Instruction) FetchOperands(reader *BytecodeReader, frame *runtime.Frame) {
 	i8.Index = uint(reader.ReadInt8())
+	frame.SetPC(reader.PC())
 }
 
 type Index16Instruction struct {

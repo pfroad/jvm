@@ -10,8 +10,9 @@ type BIPush struct {
 	val int8
 } 
 
-func (bip *BIPush) FetchOperands(reader *common.BytecodeReader) {
+func (bip *BIPush) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
 	bip.val = reader.ReadInt8()
+	frame.SetPC(reader.PC())
 }
 
 func (bip *BIPush) Execute(frame *runtime.Frame) {
@@ -23,8 +24,9 @@ type SIPush struct {
 	val int16
 }
 
-func (sip *SIPush) FetchOperands(reader *common.BytecodeReader) {
+func (sip *SIPush) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
 	sip.val = reader.ReadInt16()
+	frame.SetPC(reader.PC())
 }
 
 func (sip *SIPush) Execute(frame *runtime.Frame) {

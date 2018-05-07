@@ -28,14 +28,12 @@ func loop(thread *runtime.Thread, code []byte) {
 
 	for {
 		pc := frame.PC()
-		thread.SetPC(pc)
+		//thread.SetPC(pc)
 		reader.Reset(code, pc)
 
 		opcode := reader.ReadUint8()
 		inst := instructions.NewInstruction(opcode)
-		inst.FetchOperands(reader)
-
-		frame.SetPC(reader.PC())
+		inst.FetchOperands(reader, frame)
 
 		// execute
 		fmt.Printf("pc:%2d inst:%T %v\n", pc, inst, inst)
