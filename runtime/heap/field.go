@@ -11,9 +11,7 @@ func newFields(class *Class, cFields []*classfile.MemberInfo) []*Field {
 
 	for i, cField := range cFields {
 		field := &Field{}
-		field.SetAccessFlags(AccessFlags{cField.AccessFlag()})
-		field.SetName(cField.Name())
-		field.SetDescriptor(cField.Descriptor())
+		field.copyFromMember(cField)
 		field.SetClass(class)
 		fields[i] = field
 	}

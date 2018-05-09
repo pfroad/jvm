@@ -38,7 +38,7 @@ func startJVM(cmd *Cmd) {
 
 func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
 	for _, m := range cf.Methods() {
-		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
+		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/Name;)V" {
 			return m
 		}
 	}

@@ -13,13 +13,13 @@ func newCompositeEntry(pathList string) CompositeEntry {
 		entry := newEntry(path)
 		compositeEntry = append(compositeEntry, entry)
 	}
-	// fmt.Printf("jars %s\n", compositeEntry.String())
+	// fmt.Printf("jars %s\n", compositeEntry.Name())
 	return compositeEntry
 }
 
 func (self CompositeEntry) readClass(className string) ([]byte, Entry, error) {
 	for _, entry := range self {
-		// fmt.Printf("jar %s\n", entry.String())
+		// fmt.Printf("jar %s\n", entry.Name())
 		data, from, err := entry.readClass(className)
 		if err == nil {
 			// fmt.Printf("Errors: %s\n", err)

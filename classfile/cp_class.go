@@ -9,6 +9,6 @@ func (cc *ConstantClass) readInfo(reader *ClassReader) {
 	cc.classIndex = reader.readUint16()
 }
 
-func (cc *ConstantClass) String() string {
+func (cc *ConstantClass) Name() string {
 	return cc.cp.getUtf8(cc.classIndex)
 }

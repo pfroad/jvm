@@ -25,6 +25,6 @@ func newWildcardEntry(path string) CompositeEntry {
 		return nil
 	}
 	filepath.Walk(baseDir, walkFn)
-	// fmt.Printf("jars %s", compositeEntry.String())
+	// fmt.Printf("jars %s", compositeEntry.Name())
 	return compositeEntry
 }
