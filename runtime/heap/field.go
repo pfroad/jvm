@@ -4,7 +4,12 @@ import "jvm/classfile"
 
 type Field struct {
 	ClassMember
-} 
+	fieldId uint
+}
+
+func (field *Field) isLongOrDouble() bool {
+	return field.descriptor == "J" || field.descriptor == "D"
+}
 
 func newFields(class *Class, cFields []*classfile.MemberInfo) []*Field {
 	fields := make([]*Field, len(cFields))

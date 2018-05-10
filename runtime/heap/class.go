@@ -16,10 +16,10 @@ type Class struct {
 	interfaces    []*Class
 	instanceCount uint
 	staticCount   uint
-	staticVars    *runtime.Variables
+	staticVars    runtime.Variables
 }
 
-func NewClass(cf classfile.ClassFile) *Class {
+func NewClass(cf *classfile.ClassFile) *Class {
 	class := &Class{}
 	class.accessFlags = AccessFlags{cf.AccessFlags()}
 	class.className = cf.ClassName()

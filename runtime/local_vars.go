@@ -1,13 +1,12 @@
 package runtime
 
 import "math"
-import "jvm/runtime/heap"
 
 // this is a slice not a array.
 // array size is set when init
 type Variables []interface{}
 
-func newLocalVars(maxLocals uint) Variables {
+func NewVariables(maxLocals uint) Variables {
 	if maxLocals > 0 {
 		return make([]interface{}, maxLocals)
 	}
@@ -51,10 +50,10 @@ func (lv Variables) GetDouble(index uint) float64 {
 	return math.Float64frombits(uint64(bits))
 }
 
-func (lv Variables) SetRef(index uint, val *heap.Object) {
+func (lv Variables) SetRef(index uint, val *Object) {
 	lv[index] = val
 }
 
-func (lv Variables) GetRef(index uint) *heap.Object {
-	return lv[index].(*heap.Object)
+func (lv Variables) GetRef(index uint) *Object {
+	return lv[index].(*Object)
 }

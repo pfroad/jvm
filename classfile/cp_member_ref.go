@@ -19,6 +19,6 @@ func (cmr *ConstantMemberRef) ClassName() string {
 	return cmr.cp.getClassName(cmr.classIndex)
 }
 
-func (cmr *ConstantMemberRef) NameAndTypeIndex() (string, string) {
+func (cmr *ConstantMemberRef) NameAndDescriptor() (string, string) {
 	return cmr.cp.getNameAndType(cmr.nameAndTypeIndex)
 }
