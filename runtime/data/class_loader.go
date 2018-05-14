@@ -1,10 +1,9 @@
-package heap
+package data
 
 import (
 	"jvm/classpath"
 	"fmt"
 	"jvm/classfile"
-	"jvm/runtime"
 )
 
 type ClassLoader struct {
@@ -63,7 +62,7 @@ func prepare(class *Class) {
 }
 
 func allocAndInitStaticVars(class *Class) {
-	class.staticVars = runtime.NewVariables(class.staticCount)
+	class.staticVars = NewVariables(class.staticCount)
 	for _, field := range class.fields {
 		if field.accessFlags.IsStatic() && field.accessFlags.IsFinal() {
 			initStaticFinalVar(class, field)

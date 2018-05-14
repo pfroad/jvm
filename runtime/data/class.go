@@ -1,8 +1,7 @@
-package heap
+package data
 
 import (
 	"jvm/classfile"
-	"jvm/runtime"
 	"strings"
 )
 
@@ -17,7 +16,7 @@ type Class struct {
 	interfaces    []*Class
 	instanceCount uint
 	staticCount   uint
-	staticVars    runtime.Variables
+	staticVars    Variables
 }
 
 func NewClass(cf *classfile.ClassFile) *Class {
@@ -54,7 +53,7 @@ func (class *Class) IsAbstract() bool {
 	return class.accessFlags.IsAbstract()
 }
 
-func (class *Class) NewObject() *runtime.Object {
-	return &runtime.Object{class: class, fields: runtime.NewVariables(class.instanceCount)}
+func (class *Class) NewObject() *Object {
+	return &Object{class: class, fields: NewVariables(class.instanceCount)}
 }
 

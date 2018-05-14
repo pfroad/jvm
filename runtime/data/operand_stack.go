@@ -1,4 +1,4 @@
-package runtime
+package data
 
 import (
 	"math"
@@ -6,59 +6,59 @@ import (
 
 type OperandStack struct {
 	size uint
-	arr []interface{}
+	arr  []Slot
 }
 
-func newOperandStack(maxStack uint) *OperandStack {
+func NewOperandStack(maxStack uint) *OperandStack {
 	if maxStack > 0 {
-		return &OperandStack{arr: make([]interface{}, maxStack)}
+		return &OperandStack{arr: make([]Slot, maxStack)}
 	}
 	return nil
 }
 
-func (oStack *OperandStack) Pop() interface{} {
+func (oStack *OperandStack) Pop() Slot {
 	oStack.size--
 	return oStack.arr[oStack.size]
 }
 
-func (oStack *OperandStack) Push(val interface{})  {
+func (oStack *OperandStack) Push(val Slot) {
 	oStack.arr[oStack.size] = val
 	oStack.size++
 }
 
 func (oStack *OperandStack) PopInt() int32 {
 	oStack.size--
-	return oStack.arr[oStack.size].(int32)
+	return oStack.arr[oStack.size].val.(int32)
 }
 
 func (oStack *OperandStack) PushInt(val int32) {
-	oStack.arr[oStack.size] = val
+	oStack.arr[oStack.size].val = val
 	oStack.size++
 }
 
 func (oStack *OperandStack) PopFloat() float32 {
 	oStack.size--
-	return oStack.arr[oStack.size].(float32)
+	return oStack.arr[oStack.size].val.(float32)
 }
 
 func (oStack *OperandStack) PushFloat(val float32) {
-	oStack.arr[oStack.size] = val
+	oStack.arr[oStack.size].val = val
 	oStack.size++
 }
 
 func (oStack *OperandStack) PopLong() int64 {
 	oStack.size--
-	high := uint32(oStack.arr[oStack.size].(int32))
+	high := uint32(oStack.arr[oStack.size].val.(int32))
 	oStack.size--
-	low := uint32(oStack.arr[oStack.size].(int32))
+	low := uint32(oStack.arr[oStack.size].val.(int32))
 
-	return int64(high)<< 32 | int64(low)
+	return int64(high)<<32 | int64(low)
 }
 
 func (oStack *OperandStack) PushLong(val int64) {
-	oStack.arr[oStack.size] = int32(val)
+	oStack.arr[oStack.size].val = int32(val)
 	oStack.size++
-	oStack.arr[oStack.size] = int32(val >> 32)
+	oStack.arr[oStack.size].val = int32(val >> 32)
 	oStack.size++
 }
 
@@ -73,13 +73,13 @@ func (oStack *OperandStack) PushDouble(val float64) {
 }
 
 func (oStack *OperandStack) PushRef(obj *Object) {
-	oStack.arr[oStack.size] = obj	// Pop and release reference. int and float is not reference type, needn't release
+	oStack.arr[oStack.size].val = obj // Pop and release reference. int and float is not reference type, needn't release
 	oStack.size++
 }
 
 func (oStack *OperandStack) PopRef() *Object {
 	oStack.size--
-	ref := oStack.arr[oStack.size].(*Object)
-	oStack.arr[oStack.size] = nil	// Pop and release reference. int and float is not reference type, needn't release
+	ref := oStack.arr[oStack.size].val.(*Object)
+	oStack.arr[oStack.size].val = nil // Pop and release reference. int and float is not reference type, needn't release
 	return ref
 }

@@ -1,12 +1,12 @@
-package heap
+package data
 
 import "jvm/classfile"
 
 type ClassMember struct {
 	accessFlags AccessFlags
-	name string
-	descriptor string
-	class *Class
+	name        string
+	descriptor  string
+	class       *Class
 }
 
 func (cm *ClassMember) copyFromMember(cfMember *classfile.MemberInfo) {
@@ -29,4 +29,8 @@ func (cm *ClassMember) SetDescriptor(descriptor string) {
 
 func (cm *ClassMember) SetClass(class *Class) {
 	cm.class = class
+}
+
+func (cm *ClassMember) Descriptor() string {
+	return cm.descriptor
 }

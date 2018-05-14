@@ -1,4 +1,4 @@
-package heap
+package data
 
 import "jvm/classfile"
 

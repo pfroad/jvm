@@ -1,4 +1,4 @@
-package heap
+package data
 
 import (
 	"jvm/classfile"
@@ -18,7 +18,7 @@ func newConstantPool(class *Class, cfcp classfile.ConstantPool) *ConstantPool {
 	cpCount := len(cfcp)
 	consts := make([]Constant, cpCount)
 
-	for i := 0; i < cpCount; i++ {
+	for i := 1; i < cpCount; i++ {
 		cInfo := cfcp[i]
 		switch cInfo.(type) {
 		case *classfile.ConstantInteger:
@@ -46,6 +46,8 @@ func newConstantPool(class *Class, cfcp classfile.ConstantPool) *ConstantPool {
 	}
 
 	cp.consts = consts
+
+	return cp
 }
 
 func (cp *ConstantPool) GetConst(index uint) Constant {

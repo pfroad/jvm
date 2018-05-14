@@ -3,7 +3,7 @@ package references
 import (
 	"jvm/instructions/common"
 	"jvm/runtime"
-	"jvm/runtime/heap"
+	"jvm/runtime/data"
 )
 
 type New struct {
@@ -12,7 +12,7 @@ type New struct {
 
 func (n *New) Execute(frame *runtime.Frame) {
 	cp := frame.Method().Class().ConstantPool()
-	classRef := cp.GetConst(n.Index).(*heap.ClassRef)
+	classRef := cp.GetConst(n.Index).(*data.ClassRef)
 	class := classRef.ResolveClass()
 
 	if class.IsInterface() || class.IsAbstract() {

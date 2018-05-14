@@ -1,7 +1,7 @@
 package runtime
 
 import (
-	"jvm/runtime/heap"
+	"jvm/runtime/data"
 )
 
 // A new frame is created each time a method is invoked. A frame is destroyed when
@@ -11,27 +11,27 @@ import (
 // thread of control
 type Frame struct {
 	previous     *Frame
-	localVars    Variables
-	operandStack *OperandStack
+	localVars    data.Variables
+	operandStack *data.OperandStack
 	thread       *Thread
-	method       *heap.Method
+	method       *data.Method
 	//nextPC       int
 }
 
-func NewFrame(thread *Thread, method *heap.Method, maxLocals, maxStack uint) *Frame {
+func NewFrame(thread *Thread, method *data.Method, maxLocals, maxStack uint) *Frame {
 	return &Frame{
 		thread:       thread,
 		method:       method,
-		localVars:    NewVariables(maxLocals),
-		operandStack: newOperandStack(maxStack),
+		localVars:    data.NewVariables(maxLocals),
+		operandStack: data.NewOperandStack(maxStack),
 	}
 }
 
-func (f *Frame) LocalVars() Variables {
+func (f *Frame) LocalVars() data.Variables {
 	return f.localVars
 }
 
-func (f *Frame) OperandStack() *OperandStack {
+func (f *Frame) OperandStack() *data.OperandStack {
 	return f.operandStack
 }
 
@@ -47,6 +47,6 @@ func (f *Frame) SetPC(pc int) {
 	f.thread.SetPC(pc)
 }
 
-func (f *Frame) Method() *heap.Method {
+func (f *Frame) Method() *data.Method {
 	return f.method
 }
