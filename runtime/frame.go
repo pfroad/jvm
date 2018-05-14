@@ -1,5 +1,9 @@
 package runtime
 
+import (
+	"jvm/runtime/heap"
+)
+
 // A new frame is created each time a method is invoked. A frame is destroyed when
 // its method invocation completes, whether that completion is normal or abrupt (it
 // throws an uncaught exception)
@@ -10,12 +14,14 @@ type Frame struct {
 	localVars    Variables
 	operandStack *OperandStack
 	thread       *Thread
+	method       *heap.Method
 	//nextPC       int
 }
 
-func NewFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
+func NewFrame(thread *Thread, method *heap.Method, maxLocals, maxStack uint) *Frame {
 	return &Frame{
 		thread:       thread,
+		method:       method,
 		localVars:    NewVariables(maxLocals),
 		operandStack: newOperandStack(maxStack),
 	}
@@ -39,4 +45,8 @@ func (f *Frame) PC() int {
 
 func (f *Frame) SetPC(pc int) {
 	f.thread.SetPC(pc)
+}
+
+func (f *Frame) Method() *heap.Method {
+	return f.method
 }

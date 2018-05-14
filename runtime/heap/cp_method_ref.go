@@ -11,7 +11,8 @@ func newMethodRef(cp *ConstantPool, mRef *classfile.ConstantMethodRef) *MethodRe
 	ref := &MethodRef{}
 	ref.cp = cp
 	memberRef := mRef.ConstantMemberRef
-	ref.ResolveClassRef(memberRef.ClassName())
+	ref.className = memberRef.ClassName()
+	//ref.ResolveClass()
 	ref.resolveMethodRef(memberRef.NameAndDescriptor())
 	return ref
 }
@@ -29,7 +30,8 @@ func newInterfaceMethodRef(cp *ConstantPool, mRef *classfile.ConstantMethodRef) 
 	ref := &InterfaceMethodRef{}
 	ref.cp = cp
 	memberRef := mRef.ConstantMemberRef
-	ref.ResolveClassRef(memberRef.ClassName())
+	ref.className = memberRef.ClassName()
+	//ref.ResolveClass()
 	ref.resolveMethodRef(memberRef.NameAndDescriptor())
 	return ref
 }

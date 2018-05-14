@@ -9,6 +9,7 @@ type ClassRef struct {
 func newClassRef(cp *ConstantPool, cfcc *classfile.ConstantClass) *ClassRef {
 	classRef := &ClassRef{}
 	classRef.cp = cp
-	classRef.ResolveClassRef(cfcc.Name())
+	classRef.className = cfcc.Name()
+	//classRef.ResolveClass()
 	return classRef
 }

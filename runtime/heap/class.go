@@ -3,6 +3,7 @@ package heap
 import (
 	"jvm/classfile"
 	"jvm/runtime"
+	"strings"
 )
 
 type Class struct {
@@ -28,3 +29,32 @@ func NewClass(cf *classfile.ClassFile) *Class {
 	class.methods = newMethods(class, cf.Methods())
 	return class
 }
+
+func (class *Class) isAccessTo(other *Class) bool {
+	return class.accessFlags.IsPublic() || class.getPackageName() == other.getPackageName()
+}
+
+func (class *Class) getPackageName() string {
+	if i := strings.LastIndex(class.className, "/"); i >= 0 {
+		return class.className[:i]
+	}
+
+	return ""
+}
+
+func (class *Class) ConstantPool() *ConstantPool {
+	return class.cp
+}
+
+func (class *Class) IsInterface() bool {
+	return class.accessFlags.IsInterface()
+}
+
+func (class *Class) IsAbstract() bool {
+	return class.accessFlags.IsAbstract()
+}
+
+func (class *Class) NewObject() *runtime.Object {
+	return &runtime.Object{class: class, fields: runtime.NewVariables(class.instanceCount)}
+}
+

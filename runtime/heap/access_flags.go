@@ -33,7 +33,7 @@ func (aFlags *AccessFlags) IsPrivate() bool {
 	return 0 != aFlags.accessFlags&ACC_PRIVATE
 }
 
-func (aFlags *AccessFlags) IsProtected() {
+func (aFlags *AccessFlags) IsProtected() bool {
 	return 0 != aFlags.accessFlags&ACC_PROTECTED
 }
 

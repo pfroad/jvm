@@ -28,17 +28,28 @@ func (loader *ClassLoader) LoadClass(name string) *Class {
 }
 
 func (loader *ClassLoader) loadNonArrayClass(name string) *Class {
-	data, entry := loader.readClass(name)
-	class := loader.defineClass(data)
+	//data, entry := loader.readClass(name)
+	//class := loader.defineClass(data)
+	class, entry := loader.load(name)
 	link(class)
 	fmt.Printf("[Load %s from %s\n]", name, entry)
 	return class
+}
+
+func (loader *ClassLoader) load(name string) (*Class, classpath.Entry) {
+	data, entry := loader.readClass(name)
+	return loader.defineClass(data), entry
 }
 
 // linking class
 func link(class *Class) {
 	verify(class)
 	prepare(class)
+	resolute(class)
+}
+
+func resolute(class *Class) {
+
 }
 
 // Preparation involves creating the static fields for a class or interface and initializing
@@ -65,6 +76,22 @@ func initStaticFinalVar(class *Class, field *Field) {
 	cp := class.cp
 	cpIndex := field.ConstValueIndex()
 	fieldId := field.fieldId
+
+	if cpIndex > 0 {
+		switch field.descriptor {
+		case "Z", "B", "C", "S", "I":	// boolean, byte, char, short, int
+			staticVars.SetInt(fieldId, cp.GetConst(cpIndex).(int32))
+		case "J":	// long
+			staticVars.SetLong(fieldId, cp.GetConst(cpIndex).(int64))
+		case "F":
+			staticVars.SetFloat(fieldId, cp.GetConst(cpIndex).(float32))
+		case "D":
+			staticVars.SetDouble(fieldId, cp.GetConst(cpIndex).(float64))
+		case "Ljava/lang/String;":
+			panic("todo")
+		}
+	}
+
 }
 
 func countStaticFields(class *Class) {

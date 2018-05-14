@@ -44,6 +44,8 @@ func newConstantPool(class *Class, cfcp classfile.ConstantPool) *ConstantPool {
 		default:
 		}
 	}
+
+	cp.consts = consts
 }
 
 func (cp *ConstantPool) GetConst(index uint) Constant {

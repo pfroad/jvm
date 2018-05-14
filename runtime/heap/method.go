@@ -27,3 +27,7 @@ func (method *Method) copyFromAttributes(cfMethod *classfile.MemberInfo) {
 		method.code = code.Code()
 	}
 }
+
+func (method *Method) Class() *Class {
+	return method.class
+}

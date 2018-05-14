@@ -6,3 +6,7 @@ type Object struct {
 	class  *heap.Class
 	fields Variables
 }
+
+func NewObject(class *Class, fields Variables) *Object {
+	return
+}
