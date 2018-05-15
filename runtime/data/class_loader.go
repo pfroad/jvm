@@ -64,7 +64,7 @@ func prepare(class *Class) {
 func allocAndInitStaticVars(class *Class) {
 	class.staticVars = NewVariables(class.staticCount)
 	for _, field := range class.fields {
-		if field.accessFlags.IsStatic() && field.accessFlags.IsFinal() {
+		if field.IsStatic() && field.IsFinal() {
 			initStaticFinalVar(class, field)
 		}
 	}

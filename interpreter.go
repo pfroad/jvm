@@ -1,25 +1,20 @@
 package main
 
 import (
-	"jvm/classfile"
 	"jvm/runtime"
 	"fmt"
 	"jvm/instructions/common"
 	"jvm/instructions"
+	"jvm/runtime/data"
 )
 
-func interpret(methodInfo *classfile.MemberInfo) {
-	codeArr := methodInfo.CodeAttribute()
-	maxLocals := uint(codeArr.MaxLocals())
-	maxStack := uint(codeArr.MaxStack())
-	code := codeArr.Code()
-
+func interpret(method *data.Method) {
 	thread := runtime.NewThread()
-	frame := runtime.NewFrame(thread, maxLocals, maxStack)
+	frame := runtime.NewFrame(thread, method)
 	thread.PushFrame(frame)
 
 	defer catchError(frame)
-	loop(thread, code)
+	loop(thread, method.Code())
 }
 
 func loop(thread *runtime.Thread, code []byte) {

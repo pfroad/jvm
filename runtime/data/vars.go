@@ -4,8 +4,7 @@ import "math"
 
 // this is a slice not a array.
 // array size is set when init
-type Slot struct {
-	val interface{}
+type Slot interface {
 }
 
 type Variables []Slot
@@ -18,29 +17,29 @@ func NewVariables(maxLocals uint) Variables {
 }
 
 func (lv Variables) SetInt(index uint, val int32) {
-	lv[index] = Slot{val}
+	lv[index] = val
 }
 
 func (lv Variables) GetInt(index uint) int32 {
-	return lv[index].val.(int32)
+	return lv[index].(int32)
 }
 
 func (lv Variables) SetFloat(index uint, val float32) {
-	lv[index] = Slot{val}
+	lv[index] = val
 }
 
 func (lv Variables) GetFloat(index uint) float32 {
-	return lv[index].val.(float32)
+	return lv[index].(float32)
 }
 
 func (lv Variables) SetLong(index uint, val int64)  {
-	lv[index] = Slot{int32(val)}
-	lv[index + 1] = Slot{int32(val >> 32)}
+	lv[index] = int32(val)
+	lv[index + 1] = int32(val >> 32)
 }
 
 func (lv Variables) GetLong(index uint) int64 {
-	low := uint32(lv[index].val.(int32))
-	high := uint32(lv[index + 1].val.(int32))
+	low := uint32(lv[index].(int32))
+	high := uint32(lv[index + 1].(int32))
 	return int64(high) << 32 | int64(low)
 }
 
@@ -55,9 +54,13 @@ func (lv Variables) GetDouble(index uint) float64 {
 }
 
 func (lv Variables) SetRef(index uint, val *Object) {
-	lv[index] = Slot{val}
+	lv[index] = val
 }
 
 func (lv Variables) GetRef(index uint) *Object {
-	return lv[index].val.(*Object)
+	val := lv[index]
+	if val != nil {
+		return val.(*Object)
+	}
+	return nil
 }

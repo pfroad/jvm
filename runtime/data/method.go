@@ -28,6 +28,29 @@ func (method *Method) copyFromAttributes(cfMethod *classfile.MemberInfo) {
 	}
 }
 
-func (method *Method) Class() *Class {
-	return method.class
+func (method *Method) MaxStack() uint {
+	return method.maxStack
 }
+
+func (method *Method) MaxLocals() uint {
+	return method.maxLocals
+}
+
+func (method *Method) IsStatic() bool {
+	return method.accessFlags.IsStatic()
+}
+
+func (method *Method) IsFinal() bool {
+	return method.accessFlags.IsFinal()
+}
+
+func (method *Method) IsPublic() bool {
+	return method.accessFlags.IsPublic()
+}
+
+func (method *Method) Code() []byte {
+	return method.code
+}
+//func (method *Method) Name() string {
+//	return method.Name()
+//}

@@ -3,8 +3,8 @@ package data
 import "jvm/classfile"
 
 type MethodRef struct {
-	SymbolRef
-	method *Method
+	MemberRef
+	method     *Method
 }
 
 func newMethodRef(cp *ConstantPool, mRef *classfile.ConstantMethodRef) *MethodRef {
@@ -13,25 +13,25 @@ func newMethodRef(cp *ConstantPool, mRef *classfile.ConstantMethodRef) *MethodRe
 	memberRef := mRef.ConstantMemberRef
 	ref.className = memberRef.ClassName()
 	//ref.ResolveClass()
-	ref.resolveMethodRef(memberRef.NameAndDescriptor())
+	ref.name, ref.descriptor = memberRef.NameAndDescriptor()
 	return ref
 }
 
-func (ref *MethodRef) resolveMethodRef(name string, descriptor string) {
-
-}
+//func (ref *MethodRef) resolveMethodRef(name string, descriptor string) {
+//
+//}
 
 type InterfaceMethodRef struct {
-	SymbolRef
-	method *Method
+	MemberRef
+	method     *Method
 }
 
-func newInterfaceMethodRef(cp *ConstantPool, mRef *classfile.ConstantMethodRef) *InterfaceMethodRef {
+func newInterfaceMethodRef(cp *ConstantPool, imRef *classfile.ConstantInterfaceMethodRef) *InterfaceMethodRef {
 	ref := &InterfaceMethodRef{}
 	ref.cp = cp
-	memberRef := mRef.ConstantMemberRef
+	memberRef := imRef.ConstantMemberRef
 	ref.className = memberRef.ClassName()
 	//ref.ResolveClass()
-	ref.resolveMethodRef(memberRef.NameAndDescriptor())
+	ref.name, ref.descriptor = memberRef.NameAndDescriptor()
 	return ref
 }

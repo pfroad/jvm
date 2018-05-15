@@ -9,6 +9,7 @@ import (
 	"jvm/instructions/conversions"
 	"jvm/instructions/loads"
 	"jvm/instructions/math"
+	"jvm/instructions/references"
 	"jvm/instructions/stack"
 	"jvm/instructions/stores"
 )
@@ -467,12 +468,12 @@ func NewInstruction(opcode uint8) common.Instruction {
 		return &constants.BIPush{}
 	case SIPUSH:
 		return &constants.SIPush{}
-	//case LDC:
-	//
-	//case LDC_W:
-	//
-	//case LDC2_W:
-
+	case LDC:
+		return &constants.LDC{}
+	case LDC_W:
+		return &constants.LDCW{}
+	case LDC2_W:
+		return &constants.LDC2W{}
 	case ILOAD:
 		return &loads.ILoad{}
 	case LLOAD:
@@ -787,24 +788,24 @@ func NewInstruction(opcode uint8) common.Instruction {
 	//
 	//case RETURN:
 	//
-	//case GETSTATIC:
-	//
-	//case PUTSTATIC:
-	//
-	//case GETFIELD:
-	//
-	//case PUTFIELD:
-	//
-	//case INVOKEVIRTUAL:
-	//
-	//case INVOKESPECIAL:
-	//
+	case GETSTATIC:
+		return &references.GetStatic{}
+	case PUTSTATIC:
+		return &references.PutStatic{}
+	case GETFIELD:
+		return &references.GetField{}
+	case PUTFIELD:
+		return &references.PutField{}
+	case INVOKEVIRTUAL:
+		return &references.InvokeVirtual{}
+	case INVOKESPECIAL:
+		return &references.InvokeSpecial{}
 	//case INVOKESTATIC:
 	//
 	//case INVOKEINTERFACE:
-	//
-	//case NEW:
-	//
+
+	case NEW:
+		return &references.New{}
 	//case NEWARRAY:
 	//
 	//case ANEWARRAY:
@@ -813,10 +814,10 @@ func NewInstruction(opcode uint8) common.Instruction {
 	//
 	//case ATHROW:
 	//
-	//case CHECKCAST:
-	//
-	//case INSTANCEOF:
-	//
+	case CHECKCAST:
+		return &references.CheckCast{}
+	case INSTANCEOF:
+		return &references.InstanceOf{}
 	//case MONITORENTER:
 	//
 	//case MONITOREXIT:

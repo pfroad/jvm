@@ -57,3 +57,86 @@ func (class *Class) NewObject() *Object {
 	return &Object{class: class, fields: NewVariables(class.instanceCount)}
 }
 
+func (class *Class) StaticVars() Variables {
+	return class.staticVars
+}
+
+func (class *Class) isAssignableFrom(other *Class) bool {
+	if other == class {
+		return true
+	}
+
+	if !class.IsInterface() {
+		//if superClass := other.superClass; superClass != nil {
+		//	return class.isAssignableFrom(superClass)
+		//}
+		if other.isExtendClass(class) {
+			return true
+		}
+	} else {
+		//for c := other; c != nil; c = c.superClass {
+		//	for _, iface := range c.interfaces {
+		//		return class.isAssignableFrom(iface)
+		//	}
+		//}
+		if other.isImplements(class) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (class *Class) isExtendClass(other *Class) bool {
+	for c := class.superClass; c != nil; c = c.superClass {
+		if c == other {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (class *Class) isExtendInterface(other *Class) bool {
+	for _, iface := range class.interfaces {
+		if iface == other || iface.isExtendInterface(other) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (class *Class) isImplements(other *Class) bool {
+	for c := class ; c != nil; c = c.superClass {
+		for _, iface := range c.interfaces {
+			if iface == other || iface.isExtendInterface(other) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func (class *Class) GetMainMethod() *Method {
+	method := class.getStaticMethod("main", "([Ljava/lang/String;)V")
+
+	if method != nil && method.IsPublic() {
+		return method
+	}
+
+	return nil
+}
+
+func (class *Class) getStaticMethod(methodName string, descriptor string) *Method {
+	for _, method := range class.methods {
+		if method.accessFlags.IsStatic() &&
+			method.Name() == methodName && method.descriptor == descriptor {
+			return method
+		}
+	}
+
+	return nil
+}
+

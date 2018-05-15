@@ -34,3 +34,11 @@ func (cm *ClassMember) SetClass(class *Class) {
 func (cm *ClassMember) Descriptor() string {
 	return cm.descriptor
 }
+
+func (cm *ClassMember) Class() *Class {
+	return cm.class
+}
+
+func (cm *ClassMember) Name() string {
+	return cm.name
+}

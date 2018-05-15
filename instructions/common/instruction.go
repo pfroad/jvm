@@ -58,7 +58,8 @@ type Index16Instruction struct {
 	Index uint
 }
 
-func (i16 *Index16Instruction) FetchOperands(reader *BytecodeReader) {
+func (i16 *Index16Instruction) FetchOperands(reader *BytecodeReader, frame *runtime.Frame) {
 	i16.Index = uint(reader.ReadInt16())
+	frame.SetPC(reader.PC())
 }
 

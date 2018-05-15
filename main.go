@@ -6,15 +6,18 @@ import (
 	"fmt"
 	"jvm/classpath"
 	"strings"
-	"jvm/classfile"
+	"jvm/runtime/data"
 )
 
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
-	//fmt.Printf("classpath: %s, class: %s args: %v \n", cmd.cpOption, cmd.class, cmd.args)
+	classLoader := data.NewClassLoader(cp)
 	className := strings.Replace(cmd.class, ".", "/", -1)
-	cf := loadClass(className, cp)
-	mainMethod := getMainMethod(cf)
+	class := classLoader.LoadClass(className)
+	//fmt.Printf("classpath: %s, class: %s args: %v \n", cmd.cpOption, cmd.class, cmd.args)
+
+	//cf := loadClass(className, cp)
+	mainMethod := class.GetMainMethod()
 
 	if mainMethod != nil {
 		interpret(mainMethod)
@@ -36,15 +39,15 @@ func startJVM(cmd *Cmd) {
 	//testOperandStack(frame.OperandStack())
 }
 
-func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
-	for _, m := range cf.Methods() {
-		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/Name;)V" {
-			return m
-		}
-	}
-
-	return nil
-}
+//func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
+//	for _, m := range cf.Methods() {
+//		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/Name;)V" {
+//			return m
+//		}
+//	}
+//
+//	return nil
+//}
 
 //func testLocalVars(vars runtime.LocalVars) {
 //	vars.SetInt(0, 100)
@@ -82,24 +85,24 @@ func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
 //	println(stack.PopInt())
 //}
 
-func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
-	data, _, err := cp.ReadClass(className)
-
-	if err != nil {
-		//fmt.Printf("Cannot find or load main class %s\n", cmd.class)
-		//fmt.Printf("Error:%s", err)
-		//return
-		panic(err)
-	}
-
-	cf, err := classfile.Parse(data)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return cf
-}
+//func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
+//	data, _, err := cp.ReadClass(className)
+//
+//	if err != nil {
+//		//fmt.Printf("Cannot find or load main class %s\n", cmd.class)
+//		//fmt.Printf("Error:%s", err)
+//		//return
+//		panic(err)
+//	}
+//
+//	cf, err := classfile.Parse(data)
+//
+//	if err != nil {
+//		panic(err)
+//	}
+//
+//	return cf
+//}
 //
 //func printClassInfo(cf *classfile.ClassFile) {
 //	fmt.Printf("version: %v.%v\n", cf.MajorVersion(), cf.MinorVeresion())

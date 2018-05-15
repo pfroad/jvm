@@ -18,7 +18,7 @@ func (field *Field) ConstValueIndex() uint {
 
 func (field *Field) setValueAttribute(cField *classfile.MemberInfo) {
 	if constValueAttr := cField.ConstValueAttribute(); constValueAttr != nil {
-		field.constValueIndex = uint(cField.ConstValueAttribute().ConstantValueIndex())
+		field.constValueIndex = uint(constValueAttr.ConstantValueIndex())
 	}
 }
 
@@ -34,4 +34,16 @@ func newFields(class *Class, cFields []*classfile.MemberInfo) []*Field {
 	}
 
 	return fields
+}
+
+func (field *Field) IsStatic() bool {
+	return field.accessFlags.IsStatic()
+}
+
+func (field *Field) IsFinal() bool {
+	return field.accessFlags.IsFinal()
+}
+
+func (field *Field) FieldId() uint {
+	return field.fieldId
 }
