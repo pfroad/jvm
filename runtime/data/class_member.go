@@ -42,3 +42,29 @@ func (cm *ClassMember) Class() *Class {
 func (cm *ClassMember) Name() string {
 	return cm.name
 }
+
+func (cm *ClassMember) IsPublic() bool {
+	return cm.accessFlags.IsPublic()
+}
+
+func (cm *ClassMember) IsPrivate() bool {
+	return cm.accessFlags.IsPrivate()
+}
+
+func (cm *ClassMember) IsProtected() bool {
+	return cm.accessFlags.IsProtected()
+}
+
+func (cm *ClassMember) isAccessibleTo(other *Class) bool {
+	if cm.IsPublic() {
+		return true
+	}
+
+	class := cm.class
+	if cm.IsPrivate() {
+		return class == other
+	} else {
+		return other.GetPackageName() == class.GetPackageName() ||
+			(cm.IsProtected() && (other.isExtendClass(class)))
+	}
+}

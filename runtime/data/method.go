@@ -7,6 +7,7 @@ type Method struct {
 	maxStack  uint
 	maxLocals uint
 	code      []byte
+	argCount  uint
 }
 
 func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
@@ -16,10 +17,12 @@ func newMethods(class *Class, cfMethods []*classfile.MemberInfo) []*Method {
 		method.class = class
 		method.copyFromMember(cfMethod)
 		method.copyFromAttributes(cfMethod)
+		method.calcArgCount()
 		methods[i] = method
 	}
 	return methods
 }
+
 func (method *Method) copyFromAttributes(cfMethod *classfile.MemberInfo) {
 	if code := cfMethod.CodeAttribute(); code != nil {
 		method.maxStack = uint(code.MaxStack())
@@ -51,6 +54,27 @@ func (method *Method) IsPublic() bool {
 func (method *Method) Code() []byte {
 	return method.code
 }
+
+func (method *Method) ArgCount() uint {
+	return method.argCount
+}
+
+func (method *Method) calcArgCount() {
+	parser := &MethodDescriptorParser{}
+	methodDescriptor := parser.parse(method.descriptor)
+
+	for _, pt := range methodDescriptor.parameterTypes {
+		method.argCount++
+		if pt == "J" || pt == "D" {
+			method.argCount++
+		}
+	}
+
+	if !method.IsStatic() {
+		method.argCount++	// this
+	}
+}
+
 //func (method *Method) Name() string {
 //	return method.Name()
 //}

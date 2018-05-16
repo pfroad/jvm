@@ -83,3 +83,7 @@ func (oStack *OperandStack) PopRef() *Object {
 	oStack.arr[oStack.size] = nil // Pop and release reference. int and float is not reference type, needn't release
 	return ref
 }
+
+func (oStack *OperandStack) GetTopRef(n uint) *Object {
+	return oStack.arr[oStack.size - n - 1].(*Object)
+}

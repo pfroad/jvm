@@ -12,3 +12,7 @@ func (obj *Object) Fields() Variables {
 func (obj *Object) IsInstanceOf(class *Class) bool {
 	return class.isAssignableFrom(obj.class)
 }
+
+func (obj *Object) Class() *Class {
+	return obj.class
+}

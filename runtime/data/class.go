@@ -30,10 +30,10 @@ func NewClass(cf *classfile.ClassFile) *Class {
 }
 
 func (class *Class) isAccessTo(other *Class) bool {
-	return class.accessFlags.IsPublic() || class.getPackageName() == other.getPackageName()
+	return class.accessFlags.IsPublic() || class.GetPackageName() == other.GetPackageName()
 }
 
-func (class *Class) getPackageName() string {
+func (class *Class) GetPackageName() string {
 	if i := strings.LastIndex(class.className, "/"); i >= 0 {
 		return class.className[:i]
 	}
@@ -59,6 +59,10 @@ func (class *Class) NewObject() *Object {
 
 func (class *Class) StaticVars() Variables {
 	return class.staticVars
+}
+
+func (class *Class) SuperClass() *Class {
+	return class.superClass
 }
 
 func (class *Class) isAssignableFrom(other *Class) bool {
@@ -97,6 +101,14 @@ func (class *Class) isExtendClass(other *Class) bool {
 	return false
 }
 
+func (class *Class) IsSubClassOf(other *Class) bool {
+	return class.isExtendClass(other)
+}
+
+func (class *Class) IsSuperClassOf(other *Class) bool {
+	return other.isExtendClass(class)
+}
+
 func (class *Class) isExtendInterface(other *Class) bool {
 	for _, iface := range class.interfaces {
 		if iface == other || iface.isExtendInterface(other) {
@@ -108,7 +120,7 @@ func (class *Class) isExtendInterface(other *Class) bool {
 }
 
 func (class *Class) isImplements(other *Class) bool {
-	for c := class ; c != nil; c = c.superClass {
+	for c := class; c != nil; c = c.superClass {
 		for _, iface := range c.interfaces {
 			if iface == other || iface.isExtendInterface(other) {
 				return true
@@ -140,3 +152,6 @@ func (class *Class) getStaticMethod(methodName string, descriptor string) *Metho
 	return nil
 }
 
+func (class *Class) IsSuper() bool {
+	return class.accessFlags.IsSuper()
+}

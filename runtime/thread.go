@@ -19,7 +19,7 @@ func (t *Thread) SetPC(pc int) {
 	t.pc = pc
 }
 
-func (t *Thread) CurrentFrame() *Frame {
+func (t *Thread) TopFrame() *Frame {
 	return t.stack.top()
 }
 
