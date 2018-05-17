@@ -1,9 +1,9 @@
 package data
 
 import (
-	"fmt"
 	"jvm/classfile"
 	"jvm/classpath"
+	"fmt"
 )
 
 type ClassLoader struct {
@@ -33,6 +33,7 @@ func (loader *ClassLoader) loadNonArrayClass(name string) *Class {
 	//class := loader.defineClass(data)
 	class, entry := loader.load(name)
 	link(class)
+
 	if loader.verboseFlag {
 		fmt.Printf("[Load %s from %s\n]", name, entry)
 	}
@@ -167,9 +168,9 @@ func resolveInterfaces(class *Class, interfaceNames []string) {
 	}
 }
 
-func resolveSuperClass(class *Class, name string) {
-	if name != "java/lang/Object" {
-		class.superClass = class.classLoader.LoadClass(name)
+func resolveSuperClass(class *Class, superClass string) {
+	if class.className != "java/lang/Object" {
+		class.superClass = class.classLoader.LoadClass(superClass)
 	}
 }
 

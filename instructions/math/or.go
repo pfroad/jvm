@@ -15,14 +15,16 @@ type LOR struct {
 
 func (ior *IOR) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
-	v1 := stack.PopInt()
 	v2 := stack.PopInt()
+	v1 := stack.PopInt()
+
 	stack.PushInt(v1 | v2)
 }
 
 func (lor *LOR) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
-	v1 := stack.PopLong()
 	v2 := stack.PopLong()
+	v1 := stack.PopLong()
+
 	stack.PushLong(v1 | v2)
 }

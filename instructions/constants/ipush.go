@@ -1,7 +1,6 @@
 package constants
 
 import (
-	"jvm/instructions/common"
 	"jvm/runtime"
 )
 
@@ -10,9 +9,9 @@ type BIPush struct {
 	val int8
 } 
 
-func (bip *BIPush) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
+func (bip *BIPush) FetchOperands(reader *runtime.ByteCodeReader) {
 	bip.val = reader.ReadInt8()
-	frame.SetPC(reader.PC())
+	//frame.SetPC(reader.PC())
 }
 
 func (bip *BIPush) Execute(frame *runtime.Frame) {
@@ -24,9 +23,9 @@ type SIPush struct {
 	val int16
 }
 
-func (sip *SIPush) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
+func (sip *SIPush) FetchOperands(reader *runtime.ByteCodeReader) {
 	sip.val = reader.ReadInt16()
-	frame.SetPC(reader.PC())
+	//frame.SetPC(reader.PC())
 }
 
 func (sip *SIPush) Execute(frame *runtime.Frame) {

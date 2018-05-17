@@ -33,7 +33,7 @@ func parseCmd() *Cmd {
 	flag.StringVar(&cmd.XjreOption, "Xjre", "", "jre to path")
 	flag.Parse()
 	args := flag.Args()
-	fmt.Printf("Args %s", args)
+	fmt.Printf("Args %s \n", args)
 	if len(args) > 0 {
 		cmd.class = args[0]
 		cmd.args = args[1:]

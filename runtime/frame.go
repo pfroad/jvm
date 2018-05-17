@@ -15,6 +15,7 @@ type Frame struct {
 	operandStack *data.OperandStack
 	thread       *Thread
 	method       *data.Method
+	reader       *ByteCodeReader
 	//nextPC       int
 }
 
@@ -24,6 +25,7 @@ func NewFrame(thread *Thread, method *data.Method) *Frame {
 		method:       method,
 		localVars:    data.NewVariables(method.MaxLocals()),
 		operandStack: data.NewOperandStack(method.MaxStack()),
+		reader:       &ByteCodeReader{code: method.Code()},
 	}
 }
 
@@ -40,13 +42,17 @@ func (f *Frame) Thread() *Thread {
 }
 
 func (f *Frame) PC() int {
-	return f.thread.pc
+	return f.reader.pc
 }
 
-func (f *Frame) SetPC(pc int) {
-	f.thread.SetPC(pc)
+func (f *Frame) SetNextPC(pc int) {
+	f.reader.pc = pc
 }
 
 func (f *Frame) Method() *data.Method {
 	return f.method
+}
+
+func (f *Frame) CodeReader() *ByteCodeReader {
+	return f.reader
 }

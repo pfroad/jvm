@@ -17,7 +17,7 @@ type GoToW struct {
 	common.BranchInstruction
 }
 
-func (g2w *GoToW) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
+func (g2w *GoToW) FetchOperands(reader *runtime.ByteCodeReader) {
 	g2w.Offset = int(reader.ReadInt32())
 }
 

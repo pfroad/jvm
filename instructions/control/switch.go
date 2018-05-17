@@ -13,13 +13,13 @@ type TableSwitch struct {
 	common.BranchInstruction
 }
 
-func skipPadding(reader *common.BytecodeReader) {
+func skipPadding(reader *runtime.ByteCodeReader) {
 	for reader.PC()%4 != 0 {
 		reader.ReadUint8()
 	}
 }
 
-func (ts *TableSwitch) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
+func (ts *TableSwitch) FetchOperands(reader *runtime.ByteCodeReader) {
 	skipPadding(reader)
 	ts.defaultOffset = reader.ReadInt32()
 	ts.low = reader.ReadInt32()
@@ -47,7 +47,7 @@ type LookupSwitch struct {
 	common.BranchInstruction
 }
 
-func (ls *LookupSwitch) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
+func (ls *LookupSwitch) FetchOperands(reader *runtime.ByteCodeReader) {
 	skipPadding(reader)
 	ls.defaultOffset = reader.ReadInt32()
 	ls.npairs = reader.ReadInt32()

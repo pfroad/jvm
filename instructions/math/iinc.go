@@ -1,7 +1,6 @@
 package math
 
 import (
-	"jvm/instructions/common"
 	"jvm/runtime"
 )
 
@@ -11,10 +10,10 @@ type IINC struct {
 	Const int32
 }
 
-func (iinc *IINC) FetchOperands(reader *common.BytecodeReader, frame *runtime.Frame) {
+func (iinc *IINC) FetchOperands(reader *runtime.ByteCodeReader) {
 	iinc.Index = uint(reader.ReadUint8())
 	iinc.Const = int32(reader.ReadInt8())
-	frame.SetPC(reader.PC())
+	//frame.SetPC(reader.PC())
 }
 
 func (iinc *IINC) Execute(frame *runtime.Frame) {

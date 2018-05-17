@@ -11,7 +11,7 @@ func InvokeMethod(method *data.Method, invokerFrame *runtime.Frame) {
 	newFrame := thread.NewFrame(method)
 	thread.PushFrame(newFrame)
 	argCount := int(method.ArgCount())
-	for i := 0; i < argCount; i++ {
+	for i := argCount - 1; i >= 0; i-- {
 		slot := invokerFrame.OperandStack().Pop()
 		newFrame.LocalVars().SetSlot(uint(i), slot)
 	}

@@ -24,8 +24,8 @@ type DDiv struct {
 
 func (div *IDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
-	v1 := stack.PopInt()
 	v2 := stack.PopInt()
+	v1 := stack.PopInt()
 
 	if v2 == 0 {
 		panic("java.lang.ArithmeticException: / by zero")
@@ -37,8 +37,8 @@ func (div *IDiv) Execute(frame *runtime.Frame) {
 
 func (div *LDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
-	v1 := stack.PopLong()
 	v2 := stack.PopLong()
+	v1 := stack.PopLong()
 
 	if v2 == 0 {
 		panic("java.lang.ArithmeticException: / by zero")
@@ -50,16 +50,18 @@ func (div *LDiv) Execute(frame *runtime.Frame) {
 
 func (div *FDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
-	v1 := stack.PopFloat()
 	v2 := stack.PopFloat()
+	v1 := stack.PopFloat()
+
 	result := v1 / v2
 	stack.PushFloat(result)
 }
 
 func (div *DDiv) Execute(frame *runtime.Frame) {
 	stack := frame.OperandStack()
-	v1 := stack.PopDouble()
 	v2 := stack.PopDouble()
+	v1 := stack.PopDouble()
+
 	result := v1 / v2
 	stack.PushDouble(result)
 }

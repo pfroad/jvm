@@ -26,10 +26,11 @@ func (i *InvokeSpecial) Execute(frame *runtime.Frame) {
 	currentClass := frame.Method().Class()
 	cp := currentClass.ConstantPool()
 	methodRef := cp.GetConst(i.Index).(*data.MethodRef)
+	resolvedClass := methodRef.ResolveClass()
 	method := methodRef.ResolveMethod()
-	resolvedClass := method.Class()
+	//resolvedClass := method.Class()
 
-	if method.Name() == "<init>" && currentClass != resolvedClass {
+	if method.Name() == "<init>" && method.Class() != resolvedClass {
 		panic("java.lang.NoSuchMethodError")
 	}
 

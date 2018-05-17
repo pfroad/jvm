@@ -21,7 +21,7 @@ func interpret(method *data.Method, logInst bool) {
 
 // func loop(thread *runtime.Thread, code []byte) {
 // 	frame := thread.PopFrame()
-// 	reader := &common.BytecodeReader{}
+// 	reader := &common.CodeReader{}
 
 // 	for {
 // 		pc := thread.PC()
@@ -40,17 +40,16 @@ func interpret(method *data.Method, logInst bool) {
 
 func loop(thread *runtime.Thread, logInst bool) {
 	// frame := thread.PopFrame()	// return instruction will Pop frame
-	reader := &common.BytecodeReader{}
-
+	// reader := &common.BytecodeReader{}
 	for {
 		frame := thread.TopFrame()
-		pc := thread.PC()
+		thread.SetPC(frame.PC())
 		//thread.SetPC(pc)
-		reader.Reset(frame.Method().Code(), pc)
-
+		// reader.Reset(frame.Method().Code(), pc)
+		reader := frame.CodeReader()
 		opcode := reader.ReadUint8()
 		inst := instructions.NewInstruction(opcode)
-		inst.FetchOperands(reader, frame)
+		inst.FetchOperands(reader)
 
 		if logInst {
 			logInstruction(frame, inst)
