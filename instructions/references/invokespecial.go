@@ -18,8 +18,8 @@ type InvokeSpecial struct {
 
 /*
  	1. current class is abstract, interface or real class
-	2. objectref is object for a real class
-	3. method.Class() is class that declare the method
+	2. objectref is instance of current class
+	3. method.Class() is class that declare the method, is C
 */
 func (i *InvokeSpecial) Execute(frame *runtime.Frame) {
 	//frame.OperandStack().PopRef()
@@ -36,7 +36,7 @@ func (i *InvokeSpecial) Execute(frame *runtime.Frame) {
 	if method.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
-	
+
 	ref := frame.OperandStack().GetTopRef(method.ArgCount() - 1)	// not static, except "this"
 	if ref == nil {
 		panic("java.lang.NullPointerException")
@@ -52,11 +52,14 @@ func (i *InvokeSpecial) Execute(frame *runtime.Frame) {
 	invokeMethod := method
 	// if resolved class is super class of current class and ACC_SUPER flag is set, method.Class() should be
 	// direct super class of current class
-	// ACC_SUPER means method has been override
 	if method.Name() != "<init>" &&
 		resolvedClass.IsSuperClassOf(currentClass) &&
 		currentClass.IsSuper() {
 		invokeMethod = data.LookupMethodInClass(currentClass.SuperClass(), method.Name(), method.Descriptor())
+	}
+
+	if invokeMethod == nil || invokeMethod.IsAbstract() {
+		panic("java.lang.AbstractMethodError")
 	}
 
 	InvokeMethod(invokeMethod, frame)

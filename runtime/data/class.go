@@ -41,6 +41,10 @@ func (class *Class) GetPackageName() string {
 	return ""
 }
 
+func (class *Class) ClassName() string {
+	return class.className
+}
+
 func (class *Class) ConstantPool() *ConstantPool {
 	return class.cp
 }

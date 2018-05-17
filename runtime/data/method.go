@@ -75,6 +75,13 @@ func (method *Method) calcArgCount() {
 	}
 }
 
+func (method *Method) IsAbstract() bool {
+	return method.accessFlags.IsAbstract()
+}
+
+func (method *Method) IsNative() bool {
+	return method.accessFlags.IsNative()
+}
 //func (method *Method) Name() string {
 //	return method.Name()
 //}

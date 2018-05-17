@@ -1,5 +1,7 @@
 package runtime
 
+import "jvm/runtime/data"
+
 type Thread struct {
 	pc    int
 	stack *Stack
@@ -29,4 +31,12 @@ func (t *Thread) PopFrame() *Frame {
 
 func (t *Thread) PushFrame(frame *Frame) {
 	t.stack.push(frame)
+}
+
+func (t *Thread) NewFrame(method *data.Method) *Frame {
+	return NewFrame(t, method)
+}
+
+func (t *Thread) StackIsEmpty() bool {
+	return t.stack.IsEmpty()
 }

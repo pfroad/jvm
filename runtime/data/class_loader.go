@@ -1,18 +1,20 @@
 package data
 
 import (
-	"jvm/classpath"
 	"fmt"
 	"jvm/classfile"
+	"jvm/classpath"
 )
 
 type ClassLoader struct {
 	cp          *classpath.Classpath
+	verboseFlag bool
 	loadedClass map[string]*Class
 }
 
-func NewClassLoader(cp *classpath.Classpath) *ClassLoader {
+func NewClassLoader(cp *classpath.Classpath, verboseFlag bool) *ClassLoader {
 	return &ClassLoader{cp: cp,
+		verboseFlag: verboseFlag,
 		loadedClass: make(map[string]*Class),
 	}
 }
@@ -31,7 +33,9 @@ func (loader *ClassLoader) loadNonArrayClass(name string) *Class {
 	//class := loader.defineClass(data)
 	class, entry := loader.load(name)
 	link(class)
-	fmt.Printf("[Load %s from %s\n]", name, entry)
+	if loader.verboseFlag {
+		fmt.Printf("[Load %s from %s\n]", name, entry)
+	}
 	return class
 }
 
@@ -78,9 +82,9 @@ func initStaticFinalVar(class *Class, field *Field) {
 
 	if cpIndex > 0 {
 		switch field.descriptor {
-		case "Z", "B", "C", "S", "I":	// boolean, byte, char, short, int
+		case "Z", "B", "C", "S", "I": // boolean, byte, char, short, int
 			staticVars.SetInt(fieldId, cp.GetConst(cpIndex).(int32))
-		case "J":	// long
+		case "J": // long
 			staticVars.SetLong(fieldId, cp.GetConst(cpIndex).(int64))
 		case "F":
 			staticVars.SetFloat(fieldId, cp.GetConst(cpIndex).(float32))
@@ -98,10 +102,10 @@ func countStaticFields(class *Class) {
 	for _, field := range class.fields {
 		if field.accessFlags.IsStatic() {
 			field.fieldId = fieldId
-			fieldId ++
+			fieldId++
 
 			if field.isLongOrDouble() {
-				fieldId ++
+				fieldId++
 			}
 		}
 	}
@@ -117,10 +121,10 @@ func countInstantFields(class *Class) {
 	for _, field := range class.fields {
 		if !field.accessFlags.IsStatic() {
 			field.fieldId = fieldId
-			fieldId ++
+			fieldId++
 
 			if field.isLongOrDouble() {
-				fieldId ++
+				fieldId++
 			}
 		}
 	}
@@ -154,7 +158,7 @@ func (loader *ClassLoader) defineClass(data []byte) *Class {
 func resolveInterfaces(class *Class, interfaceNames []string) {
 	len := len(interfaceNames)
 
-	if len > 0{
+	if len > 0 {
 		interfaces := make([]*Class, len)
 		for i, interfaceName := range interfaceNames {
 			interfaces[i] = class.classLoader.LoadClass(interfaceName)
@@ -178,7 +182,3 @@ func parseClassFile(data []byte) *classfile.ClassFile {
 
 	return cf
 }
-
-
-
-

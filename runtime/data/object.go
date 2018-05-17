@@ -16,3 +16,7 @@ func (obj *Object) IsInstanceOf(class *Class) bool {
 func (obj *Object) Class() *Class {
 	return obj.class
 }
+
+func (obj *Object) IsImplements(class *Class) bool {
+	return obj.class.isImplements(class)
+}

@@ -5,13 +5,13 @@ package main
 import (
 	"fmt"
 	"jvm/classpath"
-	"strings"
 	"jvm/runtime/data"
+	"strings"
 )
 
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOption, cmd.cpOption)
-	classLoader := data.NewClassLoader(cp)
+	classLoader := data.NewClassLoader(cp, cmd.verboseClassFlag)
 	className := strings.Replace(cmd.class, ".", "/", -1)
 	class := classLoader.LoadClass(className)
 	//fmt.Printf("classpath: %s, class: %s args: %v \n", cmd.cpOption, cmd.class, cmd.args)
@@ -20,7 +20,7 @@ func startJVM(cmd *Cmd) {
 	mainMethod := class.GetMainMethod()
 
 	if mainMethod != nil {
-		interpret(mainMethod)
+		interpret(mainMethod, cmd.verboseInstFlag)
 	} else {
 		fmt.Printf("Main method not found in class %s\n", cmd.class)
 	}

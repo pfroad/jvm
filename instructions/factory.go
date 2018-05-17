@@ -776,18 +776,18 @@ func NewInstruction(opcode uint8) common.Instruction {
 		return &control.TableSwitch{}
 	case LOOKUPSWITCH:
 		return &control.LookupSwitch{}
-	//case IRETURN:
-	//
-	//case LRETURN:
-	//
-	//case FRETURN:
-	//
-	//case DRETURN:
-	//
-	//case ARETURN:
-	//
-	//case RETURN:
-	//
+	case IRETURN:
+		return &control.IReturn{}
+	case LRETURN:
+		return &control.LReturn{}
+	case FRETURN:
+		return &control.FReturn{}
+	case DRETURN:
+		return &control.DReturn{}
+	case ARETURN:
+		return &control.AReturn{}
+	case RETURN:
+		return &control.Return{}
 	case GETSTATIC:
 		return &references.GetStatic{}
 	case PUTSTATIC:
@@ -800,10 +800,10 @@ func NewInstruction(opcode uint8) common.Instruction {
 		return &references.InvokeVirtual{}
 	case INVOKESPECIAL:
 		return &references.InvokeSpecial{}
-	//case INVOKESTATIC:
-	//
-	//case INVOKEINTERFACE:
-
+	case INVOKESTATIC:
+		return &references.InvokeStatic{}
+	case INVOKEINTERFACE:
+		return &references.InvokeInterface{}
 	case NEW:
 		return &references.New{}
 	//case NEWARRAY:
