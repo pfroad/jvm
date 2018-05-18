@@ -1,12 +1,13 @@
 package data
 
 type Object struct {
-	class  *Class
-	fields Variables
+	class *Class
+	//fields Variables
+	data interface{}
 }
 
 func (obj *Object) Fields() Variables {
-	return obj.fields
+	return obj.data.(Variables)
 }
 
 func (obj *Object) IsInstanceOf(class *Class) bool {

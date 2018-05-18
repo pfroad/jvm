@@ -59,7 +59,7 @@ func (class *Class) IsAbstract() bool {
 }
 
 func (class *Class) NewObject() *Object {
-	return &Object{class: class, fields: NewVariables(class.instanceCount)}
+	return &Object{class: class, data: NewVariables(class.instanceCount)}
 }
 
 func (class *Class) StaticVars() Variables {

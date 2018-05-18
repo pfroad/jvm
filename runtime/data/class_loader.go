@@ -1,9 +1,9 @@
 package data
 
 import (
+	"fmt"
 	"jvm/classfile"
 	"jvm/classpath"
-	"fmt"
 )
 
 type ClassLoader struct {
@@ -25,6 +25,10 @@ func (loader *ClassLoader) LoadClass(name string) *Class {
 		return class
 	}
 
+	if name[0] == '[' {
+		loader.loadArrayClass(name)
+	}
+
 	return loader.loadNonArrayClass(name)
 }
 
@@ -37,6 +41,31 @@ func (loader *ClassLoader) loadNonArrayClass(name string) *Class {
 	if loader.verboseFlag {
 		fmt.Printf("[Load %s from %s\n]", name, entry)
 	}
+	return class
+}
+
+/*
+Java code: User[] arr
+arr.getClass().getName()： [Lcom.pfroad.demo.user.entity.User;
+arr.getClass().getSuperClass().getName(): class java.lang.Object
+//com.pfroad.demo.user.entity.User[]
+arr.getClass().getInterfaces():
+	java.lang.Cloneable
+	java.io.Serializable
+*/
+func (loader *ClassLoader) loadArrayClass(name string) *Class {
+	class := &Class{accessFlags: AccessFlags{ACC_PUBLIC},
+		className:   name,
+		classLoader: loader,
+		initStarted: true,
+		superClass:  loader.LoadClass("java/lang/Object"),
+		interfaces: []*Class{
+			loader.LoadClass("java/lang/Cloneable"),
+			loader.LoadClass("java/lang/Serializable"),
+		},
+	}
+
+	loader.loadedClass[name] = class
 	return class
 }
 
