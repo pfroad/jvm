@@ -56,3 +56,7 @@ func (f *Frame) Method() *data.Method {
 func (f *Frame) CodeReader() *ByteCodeReader {
 	return f.reader
 }
+
+func (f *Frame) RevertPC() {
+	f.reader.pc = f.thread.pc
+}

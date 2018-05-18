@@ -8,18 +8,23 @@ import (
 
 type GetStatic struct {
 	common.Index16Instruction
-} 
+}
 
 func (getStatic *GetStatic) Execute(frame *runtime.Frame) {
 	cp := frame.Method().Class().ConstantPool()
 	ref := cp.GetConst(getStatic.Index).(*data.FieldRef)
 	field := ref.ResolveField()
+	class := field.Class()
+
+	if !class.InitStarted() {
+		frame.RevertPC()
+		InitClass(frame.Thread(), class)
+		return
+	}
 
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
-
-	class := field.Class()
 	fieldId := field.FieldId()
 	staticVars := class.StaticVars()
 	descriptor := field.Descriptor()

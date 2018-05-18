@@ -1,9 +1,9 @@
 package references
 
 import (
-	"jvm/runtime/data"
-	"jvm/runtime"
 	"fmt"
+	"jvm/runtime"
+	"jvm/runtime/data"
 )
 
 func InvokeMethod(method *data.Method, invokerFrame *runtime.Frame) {
@@ -23,6 +23,31 @@ func InvokeMethod(method *data.Method, invokerFrame *runtime.Frame) {
 		} else {
 			panic(fmt.Sprintf("native method: %v.%v%v\n",
 				method.Class().ClassName(), method.Name(), method.Descriptor()))
+		}
+	}
+}
+
+// InitClass exec clinit to init class
+func InitClass(thread *runtime.Thread, class *data.Class) {
+	class.StartInit()
+	scheduleClinit(thread, class)
+	initSuperClass(thread, class)
+}
+
+func scheduleClinit(thread *runtime.Thread, class *data.Class) {
+	clinit := class.GetClinitMethod()
+	if clinit != nil {
+		// exec clinit
+		newFrame := thread.NewFrame(clinit)
+		thread.PushFrame(newFrame)
+	}
+}
+
+func initSuperClass(thread *runtime.Thread, class *data.Class) {
+	if !class.IsInterface() {
+		superClass := class.SuperClass()
+		if superClass != nil && !superClass.InitStarted() {
+			InitClass(thread, superClass)
 		}
 	}
 }

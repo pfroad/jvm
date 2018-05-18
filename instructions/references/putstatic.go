@@ -16,12 +16,18 @@ func (ps *PutStatic) Execute(frame *runtime.Frame) {
 	cp := currentClass.ConstantPool()
 	fieldRef := cp.GetConst(ps.Index).(*data.FieldRef)
 	field := fieldRef.ResolveField()
+	class := field.Class()
+
+	if !class.InitStarted() {
+		frame.RevertPC()
+		InitClass(frame.Thread(), class)
+		return
+	}
 
 	if !field.IsStatic() {
 		panic("java.lang.IncompatibleClassChangeError")
 	}
 
-	class := field.Class()
 	if field.IsFinal() {
 		if currentClass != class || currentMethod.ClassMember.Name() != "<clinit>" {
 			panic("java.lang.IllegalAccessError")

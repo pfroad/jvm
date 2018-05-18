@@ -15,6 +15,12 @@ func (n *New) Execute(frame *runtime.Frame) {
 	classRef := cp.GetConst(n.Index).(*data.ClassRef)
 	class := classRef.ResolveClass()
 
+	if !class.InitStarted() {
+		frame.RevertPC()
+		InitClass(frame.Thread(), class)
+		return
+	}
+
 	if class.IsInterface() || class.IsAbstract() {
 		panic("java.lang.InstantiationError")
 	}
