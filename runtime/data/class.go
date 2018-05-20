@@ -5,6 +5,18 @@ import (
 	"strings"
 )
 
+var primitiveTypes = map[string]string{
+	"void": "V",
+	"boolean": "Z",
+	"byte": "B",
+	"short": "S",
+	"int": "I",
+	"long": "J",
+	"char": "C",
+	"float": "F",
+	"double": "D",
+	}
+
 type Class struct {
 	accessFlags   AccessFlags
 	className     string
@@ -280,4 +292,21 @@ method: name -> <clinit>, descriptor -> ()V
 */
 func (class *Class) GetClinitMethod() *Method {
 	return class.getStaticMethod("<clinit>", "()V")
+}
+
+func (class *Class) ArrayClass() *Class {
+	name := "[" + class.toDescriptor()
+	return class.classLoader.LoadClass(name)
+}
+
+func (class *Class) toDescriptor() string {
+	if class.className[0] == '[' {
+		return class.className
+	}
+
+	if d, ok := primitiveTypes[class.className]; ok {
+		return d
+	}
+
+	return "L" + class.className + ";"
 }
