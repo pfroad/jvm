@@ -46,6 +46,10 @@ func (class *Class) ClassName() string {
 	return class.className
 }
 
+func (class *Class) ClassLoader() *ClassLoader {
+	return class.classLoader
+}
+
 func (class *Class) ConstantPool() *ConstantPool {
 	return class.cp
 }
