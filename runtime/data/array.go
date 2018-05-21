@@ -1,5 +1,9 @@
 package data
 
+import (
+	"fmt"
+)
+
 func (obj *Object) Bytes() []int8 {
 	return obj.data.([]int8)
 }
@@ -49,13 +53,13 @@ func (obj *Object) ArrayLength() int32 {
 	case []*Object:
 		return int32(len(obj.data.([]*Object)))
 	default:
-		panic("Not a array!")
+		panic("Not a arrays!")
 	}
 }
 
 func (class *Class) NewArray(count uint) *Object {
 	if !class.IsArray() {
-		panic("Not a array: " + class.className)
+		panic("Not a arrays: " + class.className)
 	}
 
 	switch class.className {
@@ -82,4 +86,55 @@ func (class *Class) NewArray(count uint) *Object {
 
 func (class *Class) IsArray() bool {
 	return class.className[0] == '['
+}
+
+func (class *Class) ComponentClass() *Class {
+	className := getComponentClass(class.className)
+	return class.classLoader.LoadClass(className)
+}
+
+func getComponentClass(className string) string {
+	if className[0] == '[' {
+		componentDescriptor := className[1:]
+		className, err := toComponentClassName(componentDescriptor)
+		if err == nil {
+			return className
+		}
+	}
+
+	panic("Not a array!")
+}
+
+// [XXX	->	[XXX
+// [LXXX;	->	XXX
+func toComponentClassName(componentDescriptor string) (string, error) {
+	if componentDescriptor[0] == '[' {
+		return componentDescriptor, nil
+	}
+
+	if componentDescriptor[0] == 'L' {
+		return componentDescriptor[1 : len(componentDescriptor)-1], nil
+	}
+
+	return "", fmt.Errorf("Invalid component descriptor")
+}
+
+/*
+	[XXX	->	[XXX
+	[LXXX;	->	XXX
+	[I		->	int	// not use in multianewarray
+*/
+func toClassName(descriptor string) string {
+	if className, err := toComponentClassName(descriptor); err == nil {
+		return className
+	}
+
+	// not use in multianewarray
+	for className, descriptor := range primitiveTypes {
+		if descriptor == descriptor {
+			return className
+		}
+	}
+
+	panic("Invalid descriptor:" + descriptor)
 }

@@ -9,8 +9,8 @@ import (
 /*
 If objectref is null, then the operand stack is unchanged.
 
-Otherwise, the named class, array, or interface type is resolved
-(§5.4.3.1). If objectref can be cast to the resolved class, array,
+Otherwise, the named class, arrays, or interface type is resolved
+(§5.4.3.1). If objectref can be cast to the resolved class, arrays,
 or interface type, the operand stack is unchanged; otherwise, the
 checkcast instruction throws a ClassCastException
 

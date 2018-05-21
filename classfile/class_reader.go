@@ -34,7 +34,7 @@ func (cr *ClassReader) readUint64() uint64 {
 	return val
 }
 
-// method and fields: count(u2 type) and array[element type u2]
+// method and fields: count(u2 type) and arrays[element type u2]
 func (cr *ClassReader) readUint16s() []uint16 {
 	n := cr.readUint16()
 	u2s := make([]uint16, n)

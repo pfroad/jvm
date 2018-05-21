@@ -2,8 +2,8 @@ package data
 
 import "math"
 
-// this is a slice not a array.
-// array size is set when init
+// this is a slice not a arrays.
+// arrays size is set when init
 type Slot interface {
 }
 

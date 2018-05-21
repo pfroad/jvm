@@ -2,6 +2,7 @@ package instructions
 
 import (
 	"fmt"
+	"jvm/instructions/arrays"
 	"jvm/instructions/common"
 	"jvm/instructions/comparisons"
 	"jvm/instructions/constants"
@@ -524,22 +525,22 @@ func NewInstruction(opcode uint8) common.Instruction {
 		return &loads.ALoad2{}
 	case ALOAD_3:
 		return &loads.ALoad3{}
-	//case IALOAD:
-	//
-	//case LALOAD:
-	//
-	//case FALOAD:
-	//
-	//case DALOAD:
-	//
-	//case AALOAD:
-	//
-	//case BALOAD:
-	//
-	//case CALOAD:
-	//
-	//case SALOAD:
-
+	case IALOAD:
+		return &arrays.IALoad{}
+	case LALOAD:
+		return &arrays.LALoad{}
+	case FALOAD:
+		return &arrays.FALoad{}
+	case DALOAD:
+		return &arrays.DALoad{}
+	case AALOAD:
+		return &arrays.AALoad{}
+	case BALOAD:
+		return &arrays.BALoad{}
+	case CALOAD:
+		return &arrays.CALoad{}
+	case SALOAD:
+		return &arrays.SALoad{}
 	case ISTORE:
 		return &stores.IStore{}
 	case LSTORE:
@@ -590,22 +591,22 @@ func NewInstruction(opcode uint8) common.Instruction {
 		return &stores.AStore2{}
 	case ASTORE_3:
 		return &stores.AStore3{}
-	//case IASTORE:
-	//
-	//case LASTORE:
-	//
-	//case FASTORE:
-	//
-	//case DASTORE:
-	//
-	//case AASTORE:
-	//
-	//case BASTORE:
-	//
-	//case CASTORE:
-	//
-	//case SASTORE:
-
+	case IASTORE:
+		return &arrays.IAStore{}
+	case LASTORE:
+		return &arrays.LAStore{}
+	case FASTORE:
+		return &arrays.FAStore{}
+	case DASTORE:
+		return &arrays.DAStore{}
+	case AASTORE:
+		return &arrays.AAStore{}
+	case BASTORE:
+		return &arrays.BAStore{}
+	case CASTORE:
+		return &arrays.CAStore{}
+	case SASTORE:
+		return &arrays.SAStore{}
 	case POP:
 		return &stack.Pop{}
 	case POP2:
@@ -806,12 +807,12 @@ func NewInstruction(opcode uint8) common.Instruction {
 		return &references.InvokeInterface{}
 	case NEW:
 		return &references.New{}
-	//case NEWARRAY:
-	//
-	//case ANEWARRAY:
-	//
-	//case ARRAYLENGTH:
-	//
+	case NEWARRAY:
+		return &arrays.NewArray{}
+	case ANEWARRAY:
+		return &arrays.ANewArray{}
+	case ARRAYLENGTH:
+		return &arrays.ArrayLength{}
 	//case ATHROW:
 	//
 	case CHECKCAST:
@@ -824,8 +825,8 @@ func NewInstruction(opcode uint8) common.Instruction {
 	//
 	//case WIDE:
 	//
-	//case MULTIANEWARRAY:
-
+	case MULTIANEWARRAY:
+		return &arrays.MultiANewArray{}
 	case IFNULL:
 		return &control.IfNull{}
 	case IFNONNULL:

@@ -1,4 +1,4 @@
-package references
+package arrays
 
 import (
 	"jvm/instructions/common"
