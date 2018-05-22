@@ -47,7 +47,7 @@ func (cAstore *CAStore) Execute(frame *runtime.Frame) {
 	checkNotNull(arrRef)
 	chars := arrRef.Chars()
 	checkIndex(len(chars), idx)
-	chars[idx] = int16(val)
+	chars[idx] = uint16(val)
 }
 
 type DAStore struct {

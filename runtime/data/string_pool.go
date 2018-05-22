@@ -11,7 +11,7 @@ func JString(loader *ClassLoader, goString string) *Object {
 
 	chars := stringToUtf16(goString)
 	jChars := &Object{loader.LoadClass("[C"), chars}
-	jString := loader.LoadClass("java/lang.String").NewObject()
+	jString := loader.LoadClass("java/lang/String").NewObject()
 	jString.SetRefVar("value", "[C", jChars)
 	internedStrings[goString] = jString
 	return jString
