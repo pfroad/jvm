@@ -26,7 +26,7 @@ func (loader *ClassLoader) LoadClass(name string) *Class {
 	}
 
 	if name[0] == '[' {
-		loader.loadArrayClass(name)
+		return loader.loadArrayClass(name)
 	}
 
 	return loader.loadNonArrayClass(name)
@@ -61,7 +61,7 @@ func (loader *ClassLoader) loadArrayClass(name string) *Class {
 		superClass:  loader.LoadClass("java/lang/Object"),
 		interfaces: []*Class{
 			loader.LoadClass("java/lang/Cloneable"),
-			loader.LoadClass("java/lang/Serializable"),
+			loader.LoadClass("java/io/Serializable"),
 		},
 	}
 
@@ -121,7 +121,9 @@ func initStaticFinalVar(class *Class, field *Field) {
 		case "D":
 			staticVars.SetDouble(fieldId, cp.GetConst(cpIndex).(float64))
 		case "Ljava/lang/String;":
-			panic("todo")
+			str := cp.GetConst(cpIndex).(string)
+			jStr := JString(class.classLoader, str)
+			staticVars.SetRef(fieldId, jStr)
 		}
 	}
 

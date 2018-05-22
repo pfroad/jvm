@@ -69,6 +69,8 @@ func _println(stack *data.OperandStack, descriptor string) {
 		fmt.Printf("%v\n", stack.PopLong())
 	case "(D)V":
 		fmt.Printf("%v\n", stack.PopDouble())
+	case "(Ljava/lang/String;)V":
+		fmt.Println(GoString(stack.PopRef()))
 	default:
 		panic("println: " + descriptor)
 	}

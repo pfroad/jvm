@@ -6,16 +6,16 @@ import (
 )
 
 var primitiveTypes = map[string]string{
-	"void": "V",
+	"void":    "V",
 	"boolean": "Z",
-	"byte": "B",
-	"short": "S",
-	"int": "I",
-	"long": "J",
-	"char": "C",
-	"float": "F",
-	"double": "D",
-	}
+	"byte":    "B",
+	"short":   "S",
+	"int":     "I",
+	"long":    "J",
+	"char":    "C",
+	"float":   "F",
+	"double":  "D",
+}
 
 type Class struct {
 	accessFlags   AccessFlags
@@ -86,26 +86,64 @@ func (class *Class) SuperClass() *Class {
 	return class.superClass
 }
 
+/*
+	The following rules are used to determine whether an objectref
+	that is not null can be cast to the resolved type: if S is the class of
+	the object referred to by objectref and T is the resolved class, array,
+	or interface type, checkcast determines whether objectref can be
+	cast to type T as follows:
+	• If S is an ordinary (nonarray) class, then:
+		– If T is a class type, then S must be the same class as T, or S
+		must be a subclass of T;
+		– If T is an interface type, then S must implement interface T.
+	• If S is an interface type, then:6.5 Instructions THE JAVA VIRTUAL MACHINE INSTRUCTION SET
+	386
+		– If T is a class type, then T must be Object.
+		– If T is an interface type, then T must be the same interface as
+		S or a superinterface of S.
+	• If S is a class representing the array type SC[], that is, an array
+	of components of type SC, then:
+		– If T is a class type, then T must be Object.
+		– If T is an interface type, then T must be one of the interfaces
+		implemented by arrays (JLS §4.10.3).
+		– If T is an array type TC[], that is, an array of components of
+		type TC, then one of the following must be true:
+			› TC and SC are the same primitive type.
+			› TC and SC are reference types, and type SC can be cast to TC
+			by recursive application of these rules
+*/
 func (class *Class) isAssignableFrom(other *Class) bool {
-	if other == class {
+	s, t := other, class
+	if s == t {
 		return true
 	}
 
-	if !class.IsInterface() {
-		//if superClass := other.superClass; superClass != nil {
-		//	return class.isAssignableFrom(superClass)
-		//}
-		if other.isExtendClass(class) {
-			return true
+	if !s.IsArray() {
+		if !s.IsInterface() {
+			if !t.IsInterface() {
+				return s.isExtendClass(t)
+			} else {
+				return s.isImplements(t)
+			}
+		} else {
+			if !t.IsInterface() {
+				return t.isJObject()
+			} else {
+				return s.isExtendInterface(t)
+			}
 		}
 	} else {
-		//for c := other; c != nil; c = c.superClass {
-		//	for _, iface := range c.interfaces {
-		//		return class.isAssignableFrom(iface)
-		//	}
-		//}
-		if other.isImplements(class) {
-			return true
+		if !t.IsArray() {
+			if t.IsInterface() {
+				return t.isJCloneable() || t.isJSerializable()
+			} else {
+				return t.isJObject()
+			}
+		} else {
+			tc := t.ComponentClass()
+			sc := s.ComponentClass()
+
+			return tc == sc || tc.isAssignableFrom(sc)
 		}
 	}
 
@@ -309,4 +347,27 @@ func (class *Class) toDescriptor() string {
 	}
 
 	return "L" + class.className + ";"
+}
+
+func (class *Class) isJObject() bool {
+	return class.className == "java/lang/Object"
+}
+
+func (class *Class) isJCloneable() bool {
+	return class.className == "java/lang/Cloneable"
+}
+
+func (class *Class) isJSerializable() bool {
+	return class.className == "java/io/Serializable"
+}
+
+func (class *Class) getField(name, descriptor string, isStatic bool) *Field {
+	for _, field := range class.fields {
+		if field.IsStatic() == isStatic &&
+			field.name == name && field.descriptor == descriptor {
+			return field
+		}
+	}
+
+	return nil
 }

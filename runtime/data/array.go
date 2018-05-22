@@ -12,8 +12,8 @@ func (obj *Object) Shorts() []int16 {
 	return obj.data.([]int16)
 }
 
-func (obj *Object) Chars() []int16 {
-	return obj.data.([]int16)
+func (obj *Object) Chars() []uint16 {
+	return obj.data.([]uint16)
 }
 
 func (obj *Object) Ints() []int32 {

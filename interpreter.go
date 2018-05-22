@@ -8,15 +8,28 @@ import (
 	"jvm/runtime/data"
 )
 
-func interpret(method *data.Method, logInst bool) {
+func interpret(method *data.Method, logInst bool, args []string) {
 	thread := runtime.NewThread()
 	frame := thread.NewFrame(method)
 	//frame := runtime.NewFrame(thread, method)
 	thread.PushFrame(frame)
-
+	jArgs := createArgsArray(method.Class().ClassLoader(), args)
+	frame.LocalVars().SetRef(0, jArgs)
 	defer catchError(thread)
 	// loop(thread, method.Code())
 	loop(thread, logInst)
+}
+
+func createArgsArray(classLoader *data.ClassLoader, args []string) *data.Object {
+	stringClass := classLoader.LoadClass("java/lang/String")
+	strArr := stringClass.ArrayClass().NewArray(uint(len(args)))
+	jArgs := strArr.Refs()
+
+	for i, arg := range args {
+		jArgs[i] = data.JString(classLoader, arg)
+	}
+
+	return strArr
 }
 
 // func loop(thread *runtime.Thread, code []byte) {

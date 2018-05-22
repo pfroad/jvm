@@ -7,7 +7,8 @@ import (
 )
 
 func _ldc(frame *runtime.Frame, index uint) {
-	cp := frame.Method().Class().ConstantPool()
+	class := frame.Method().Class()
+	cp := class.ConstantPool()
 	val := cp.GetConst(index)
 
 	switch val.(type) {
@@ -16,7 +17,8 @@ func _ldc(frame *runtime.Frame, index uint) {
 	case float32:
 		frame.OperandStack().PushFloat(val.(float32))
 	case string:
-		// implement ch8
+		internedString := data.JString(class.ClassLoader(), val.(string))
+		frame.OperandStack().PushRef(internedString)
 	case *data.ClassRef:
 		// implement ch9
 	default:

@@ -21,3 +21,15 @@ func (obj *Object) Class() *Class {
 func (obj *Object) IsImplements(class *Class) bool {
 	return obj.class.isImplements(class)
 }
+
+func (obj *Object) SetRefVar(fieldName string, descriptor string, val *Object) {
+	field := obj.class.getField(fieldName, descriptor, false)
+	slots := obj.data.(Variables)
+	slots.SetRef(field.fieldId, val)
+}
+
+func (obj *Object) GetRefVar(fieldName string, descriptor string) *Object {
+	field := obj.class.getField(fieldName, descriptor, false)
+	slots := obj.data.(Variables)
+	return slots.GetRef(field.fieldId)
+}
